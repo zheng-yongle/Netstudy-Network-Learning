@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subnet Calculator | NetStudy</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
+        header{background:#1565C0;color:#fff;padding:20px;text-align:center;}
+        nav{background:#eee;padding:16px;text-align:center;}
+        nav a{margin:0 12px;text-decoration:none;color:#1565C0;font-weight:bold;}
+        .wrap{width:60%;margin:30px auto;border:1px solid #ddd;border-radius:8px;padding:24px;}
+        input{width:100%;padding:10px;margin:8px 0;font-size:15px;}
+        button{background:#1565C0;color:white;border:none;padding:10px 26px;border-radius:4px;font-size:15px;cursor:pointer;}
+        #output{margin-top:20px;padding:16px;background:#F5F5F5;white-space:pre-line;}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>IPv4 Subnet Calculator</h1>
+    </header>
+    <nav>
+        <a href=" ">Home</a >
+        <a href="port-sim.html">Virtual Port Simulator</a >
+        <a href="calculator.html">Subnet Calculator</a >
+        <a href="chatbot.html">Network AI Chatbot</a >
+        <a href="lab-quiz.html">Lab Quiz</a >
+        <a href="login.html">Login / Register</a >
+    </nav>
+    <div class="wrap">
+        <input id="ipInput" placeholder="Enter IPv4 Address e.g. 10.10.0.1">
+        <input id="maskInput" placeholder="Enter Subnet Mask e.g. 255.255.255.0">
+        <button onclick="calculateSubnet()">Calculate Network Info</button>
+        <div id="output"></div>
+    </div>
+
+<script>
+function ipToNum(ipStr) {
+    let parts = ipStr.split('.').map(Number);
+    return (parts[0] << 24) + (parts[1] << 16) + (parts[2] << 8) + parts[3];
+}
+function numToIp(num) {
+    let p1 = (num >>> 24) & 255;
+    let p2 = (num >>> 16) & 255;
+    let p3 = (num >>> 8) & 255;
+    let p4 = num & 255;
+    return `${p1}.${p2}.${p3}.${p4}`;
+}
+function getMaskBits(maskStr) {
+    let maskNum = ipToNum(maskStr);
+    let bits = 0;
+    let temp = maskNum;
+    while((temp & 0x80000000) !== 0 && bits < 32) {
+        bits++;
+        temp = temp << 1;
+    }
+    return bits;
+}
+function calculateSubnet(){
+    let ipText = document.getElementById("ipInput").value.trim();
+    let maskText = document.getElementById("maskInput").value.trim();
+    let resultBox = document.getElementById("output");
+    try{
+        let ipNum = ipToNum(ipText);
+        let maskNum = ipToNum(maskText);
+        let networkNum = ipNum & maskNum;
+        let wildcard = ~maskNum >>> 0;
+        let broadcastNum = networkNum | wildcard;
+        let totalHosts = wildcard + 1;
+        let usableHosts = totalHosts - 2;
+        let maskBits = getMaskBits(maskText);
+        let networkIp = numToIp(networkNum);
+        let broadcastIp = numToIp(broadcastNum);
+        resultBox.innerText = 
+`Network Address: ${networkIp}
+Broadcast Address: ${broadcastIp}
+CIDR Notation: /${maskBits}
+Total addresses in subnet: ${totalHosts}
+Usable host addresses: ${usableHosts}`;
+    }catch(e){
+        resultBox.innerText = "Invalid IP or Subnet Mask, please check your input format.";
+    }
+}
+</script>
+</body>
+</html>
