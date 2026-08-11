@@ -3,95 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab Quiz | NetStudy</title>
+    <title>Lab Quiz</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
-        header{background:#1565C0;color:#fff;padding:20px;text-align:center;}
-        nav{background:#EEEEEE;padding:16px;text-align:center;}
-        nav a{margin:0 12px;text-decoration:none;color:#1565C0;font-weight:bold;}
-        .container{width:90%;max-width:800px;margin:30px auto;}
-        .card{border:1px solid #ddd;border-radius:8px;padding:22px;margin-bottom:20px;}
-        h3{color:#1565C0;margin-bottom:12px;}
-        .question{margin:16px 0;}
-        .submit-btn{background:#1565C0;color:white;border:none;padding:11px 24px;border-radius:4px;font-size:16px;cursor:pointer;}
-        #result{margin-top:20px;padding:15px;border-radius:6px;display:none;}
-        .correct{color:green;}
-        .wrong{color:red;}
+        *{
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body{
+            margin:0;
+            padding:0;
+        }
+        header{
+            background-color:#206bc4;
+            color:white;
+            text-align:center;
+            padding:20px 10px;
+        }
+        nav{
+            background:#fff;
+            padding:12px;
+            text-align:center;
+            border-bottom:1px solid #ddd;
+        }
+        nav a{
+            margin:0 10px;
+            color:#206bc4;
+            text-decoration:none;
+        }
+        .container{
+            max-width:900px;
+            margin:30px auto;
+            padding:0 20px;
+        }
+        .question-block{
+            background:#f8f9fa;
+            padding:18px;
+            border-radius:8px;
+            margin-bottom:16px;
+        }
+        .submit-all{
+            padding:12px 26px;
+            background:#206bc4;
+            color:white;
+            border:none;
+            border-radius:4px;
+            font-size:16px;
+            cursor:pointer;
+        }
+        .result{
+            margin-top:20px;
+            font-size:18px;
+            font-weight:bold;
+        }
+        .correct{
+            color:#238823;
+        }
+        .wrong{
+            color:#d62828;
+        }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Network Lab Quiz</h1>
-        <p>Test your networking knowledge</p >
-    </header>
-    <nav>
-        <a href=" ">Home</a >
-        <a href="port-sim.html">Virtual Port Simulator</a >
-        <a href="calculator.html">Subnet Calculator</a >
-        <a href="chatbot.html">Network AI Chatbot</a >
-        <a href="lab-quiz.html">Lab Quiz</a >
-        <a href="login.html">Login / Register</a >
-    </nav>
-    <div class="container">
-        <div class="card">
-            <div class="question">
-                <p>1. Which device works on OSI Layer 3?</p >
-                <label><input type="radio" name="q1" value="switch"> Switch</label><br>
-                <label><input type="radio" name="q1" value="router"> Router</label><br>
-                <label><input type="radio" name="q1" value="hub"> Hub</label>
-            </div>
-            <div class="question">
-                <p>2. What does ARP do?</p >
-                <label><input type="radio" name="q2" value="ip-mac"> Convert IP address to MAC address</label><br>
-                <label><input type="radio" name="q2" value="mac-ip"> Convert MAC address to IP address</label><br>
-                <label><input type="radio" name="q2" value="domain"> Resolve domain name</label>
-            </div>
-            <div class="question">
-                <p>3. Port 443 is used for:</p >
-                <label><input type="radio" name="q3" value="http"> HTTP</label><br>
-                <label><input type="radio" name="q3" value="https"> HTTPS</label><br>
-                <label><input type="radio" name="q3" value="ftp"> FTP</label>
-            </div>
-            <div class="question">
-                <p>4. Subnetting helps to:</p >
-                <label><input type="radio" name="q4" value="split"> Split large network into smaller networks</label><br>
-                <label><input type="radio" name="q4" value="encrypt"> Encrypt data transmission</label><br>
-                <label><input type="radio" name="q4" value="increase"> Increase internet speed</label>
-            </div>
-            <button class="submit-btn" onclick="checkAnswer()">Submit Answers</button>
-            <div id="result"></div>
-        </div>
+<header>
+    <h1>Lab Quiz</h1>
+    <p>Computer Hardware & Networking Practice</p >
+</header>
+<nav>
+    <a href=" ">Home</a >
+    <a href="#">Virtual Port Simulator</a >
+    <a href="#">Subnet Calculator</a >
+    <a href="chatbot.html">Network AI Chatbot</a >
+    <a href="#">Lab Quiz</a >
+    <a href="#">Login / Register</a >
+</nav>
+
+<div class="container">
+    <div class="question-block">
+        <p>1. Which layer does a switch operate on?</p >
+        <label><input type="radio" name="q1" value="A"> Layer 1</label><br>
+        <label><input type="radio" name="q1" value="B"> Layer 2</label><br>
+        <label><input type="radio" name="q1" value="C"> Layer 3</label><br>
+        <label><input type="radio" name="q1" value="D"> Layer 4</label>
+    </div>
+    <div class="question-block">
+        <p>2. What is the main function of a router?</p >
+        <label><input type="radio" name="q2" value="A"> Forward frames inside LAN</label><br>
+        <label><input type="radio" name="q2" value="B"> Connect different networks</label><br>
+        <label><input type="radio" name="q2" value="C"> Prevent ESD damage</label><br>
+        <label><input type="radio" name="q2" value="D"> Manage display output</label>
+    </div>
+    <div class="question-block">
+        <p>3. What does CMOS battery store?</p >
+        <label><input type="radio" name="q3" value="A"> Operating system files</label><br>
+        <label><input type="radio" name="q3" value="B"> BIOS configuration and system time</label><br>
+        <label><input type="radio" name="q3" value="C"> User documents</label><br>
+        <label><input type="radio" name="q3" value="D"> Network IP addresses</label>
+    </div>
+    <div class="question-block">
+        <p>4. Which RAID level provides mirroring?</p >
+        <label><input type="radio" name="q4" value="A"> RAID 0</label><br>
+        <label><input type="radio" name="q4" value="B"> RAID 1</label><br>
+        <label><input type="radio" name="q4" value="C"> RAID 5</label><br>
+        <label><input type="radio" name="q4" value="D"> RAID 10</label>
+    </div>
+    <div class="question-block">
+        <p>5. What tool protects hardware from ESD?</p >
+        <label><input type="radio" name="q5" value="A"> Surge protector</label><br>
+        <label><input type="radio" name="q5" value="B"> Anti-static wrist strap</label><br>
+        <label><input type="radio" name="q5" value="C"> Compressed air</label><br>
+        <label><input type="radio" name="q5" value="D"> UPS</label>
+    </div>
+    <div class="question-block">
+        <p>6. What information does DHCP assign automatically?</p >
+        <label><input type="radio" name="q6" value="A"> MAC address</label><br>
+        <label><input type="radio" name="q6" value="B"> IP address</label><br>
+        <label><input type="radio" name="q6" value="C"> Boot order</label><br>
+        <label><input type="radio" name="q6" value="D"> Port number</label>
+    </div>
+    <div class="question-block">
+        <p>7. Minimum number of hard drives required for RAID 5?</p >
+        <label><input type="radio" name="q7" value="A"> 2</label><br>
+        <label><input type="radio" name="q7" value="B"> 3</label><br>
+        <label><input type="radio" name="q7" value="C"> 4</label><br>
+        <label><input type="radio" name="q7" value="D"> 5</label>
+    </div>
+    <div class="question-block">
+        <p>8. Why do technicians use port scanning?</p >
+        <label><input type="radio" name="q8" value="A"> Check open ports for security audit</label><br>
+        <label><input type="radio" name="q8" value="B"> Clean hard disk dust</label><br>
+        <label><input type="radio" name="q8" value="C"> Adjust monitor brightness</label><br>
+        <label><input type="radio" name="q8" value="D"> Set static IP</label>
+    </div>
+    <div class="question-block">
+        <p>9. UTP cable stands for?</p >
+        <label><input type="radio" name="q9" value="A"> Unshielded Twisted Pair</label><br>
+        <label><input type="radio" name="q9" value="B"> Universal Transfer Protocol</label><br>
+        <label><input type="radio" name="q9" value="C"> Unified Twisted Port</label><br>
+        <label><input type="radio" name="q9" value="D"> Usable Transmission Pair</label>
+    </div>
+    <div class="question-block">
+        <p>10. What can protect computer against power surges?</p >
+        <label><input type="radio" name="q10" value="A"> Anti-static bag</label><br>
+        <label><input type="radio" name="q10" value="B"> Surge protector</label><br>
+        <label><input type="radio" name="q10" value="C"> CMOS battery</label><br>
+        <label><input type="radio" name="q10" value="D"> USB hub</label>
     </div>
 
+    <button class="submit-all" onclick="checkAnswer()">Submit All Answers</button>
+    <div class="result" id="resultArea"></div>
+</div>
+
 <script>
+//标准答案
+const answerKey = {
+    q1:"B",
+    q2:"B",
+    q3:"B",
+    q4:"B",
+    q5:"B",
+    q6:"B",
+    q7:"B",
+    q8:"A",
+    q9:"A",
+    q10:"B"
+};
+
 function checkAnswer(){
     let score = 0;
-    let feedback = "";
-    // 正确答案
-    const ans = {q1:"router", q2:"ip-mac", q3:"https", q4:"split"};
-    let q1 = document.querySelector('input[name="q1"]:checked');
-    let q2 = document.querySelector('input[name="q2"]:checked');
-    let q3 = document.querySelector('input[name="q3"]:checked');
-    let q4 = document.querySelector('input[name="q4"]:checked');
-    if(!q1||!q2||!q3||!q4){
-        alert("Please complete all questions!");
-        return;
+    let total = Object.keys(answerKey).length;
+    for(let key in answerKey){
+        let userAns = document.querySelector(`input[name="${key}"]:checked`);
+        if(userAns && userAns.value === answerKey[key]){
+            score++;
+        }
     }
-    if(q1.value === ans.q1) score++;
-    if(q2.value === ans.q2) score++;
-    if(q3.value === ans.q3) score++;
-    if(q4.value === ans.q4) score++;
-
-    feedback += `<p>Your score: ${score}/4</p >`;
-    feedback += `<p>Q1 Correct answer: Router (Layer 3)</p >`;
-    feedback += `<p>Q2 Correct answer: Convert IP address to MAC address</p >`;
-    feedback += `<p>Q3 Correct answer: HTTPS</p >`;
-    feedback += `<p>Q4 Correct answer: Split large network into smaller networks</p >`;
-    
-    let resBox = document.getElementById("result");
-    resBox.style.display = "block";
-    resBox.innerHTML = feedback;
+    document.getElementById("resultArea").innerHTML =
+    `Your Score: ${score} / ${total}`;
 }
 </script>
+
 </body>
 </html>
