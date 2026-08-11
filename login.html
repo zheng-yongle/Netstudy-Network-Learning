@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | NetStudy</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
+        header{background:#1565C0;color:#fff;padding:20px;text-align:center;}
+        nav{background:#EEEEEE;padding:16px;text-align:center;}
+        nav a{margin:0 12px;text-decoration:none;color:#1565C0;font-weight:bold;}
+        .container{width:90%;max-width:420px;margin:50px auto;}
+        .card{border:1px solid #ddd;border-radius:8px;padding:30px;}
+        h3{color:#1565C0;text-align:center;margin-bottom:24px;}
+        input{width:100%;padding:11px;margin:8px 0;font-size:15px;}
+        .login-btn{width:100%;background:#1565C0;color:white;border:none;padding:12px;font-size:16px;border-radius:4px;cursor:pointer;margin-top:10px;}
+        #msg{margin-top:15px;text-align:center;}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NetStudy Login</h1>
+    </header>
+    <nav>
+        <a href=" ">Home</a >
+        <a href="port-sim.html">Virtual Port Simulator</a >
+        <a href="calculator.html">Subnet Calculator</a >
+        <a href="chatbot.html">Network AI Chatbot</a >
+        <a href="lab-quiz.html">Lab Quiz</a >
+        <a href="login.html">Login / Register</a >
+    </nav>
+    <div class="container">
+        <div class="card">
+            <h3>User Login</h3>
+            <input id="username" placeholder="Username">
+            <input id="password" type="password" placeholder="Password">
+            <button class="login-btn" onclick="login()">Login</button>
+            <div id="msg"></div>
+            <p style="text-align:center;margin-top:16px;font-size:14px;">
+                Demo Admin: admin / 123456<br>
+                Demo Student: student / 111111
+            </p >
+        </div>
+    </div>
+
+<script>
+function login(){
+    let user = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+    let msgBox = document.getElementById("msg");
+
+    if((user === "admin" && pass === "123456") || (user === "student" && pass === "111111")){
+        msgBox.style.color = "green";
+        msgBox.innerText = "Login successful! Welcome.";
+    }else{
+        msgBox.style.color = "red";
+        msgBox.innerText = "Wrong username or password.";
+    }
+}
+</script>
+</body>
+</html>
