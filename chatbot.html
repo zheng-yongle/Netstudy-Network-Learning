@@ -3,91 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Network AI Chatbot | NetStudy</title>
-    <script type="module">
-        import { createWebLLM } from "https://cdn.jsdelivr.net/npm/@webllm/webllm@0.2.1/dist/webllm.min.js";
-        window.llmEngine = await createWebLLM({
-            model: "Llama-3-8B-Instruct-q4f32_1-MLC",
-        });
-        window.ready = true;
-    </script>
+    <title>Network AI Chatbot</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
-        header{background:#1565C0;color:#fff;padding:20px;text-align:center;}
-        nav{background:#EEEEEE;padding:16px;text-align:center;}
-        nav a{margin:0 12px;text-decoration:none;color:#1565C0;font-weight:bold;}
-        .container{width:90%;max-width:750px;margin:30px auto;}
-        .chat-window{border:1px solid #ddd;border-radius:8px;padding:20px;height:420px;overflow-y:auto;margin-bottom:15px;background:#fafafa;}
-        .user{text-align:right;margin:8px 0;}
-        .bot{text-align:left;margin:8px 0;}
-        .user span{background:#1565C0;color:white;padding:8px 12px;border-radius:6px;display:inline-block;max-width:75%;}
-        .bot span{background:#e4e4e4;color:#222;padding:8px 12px;border-radius:6px;display:inline-block;max-width:75%;white-space:pre-wrap;}
-        .input-area{display:flex;gap:8px;}
-        #question{flex:1;padding:10px;font-size:15px;}
-        button{background:#1565C0;color:white;border:none;padding:10px 20px;border-radius:4px;cursor:pointer;}
+        *{
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body{
+            margin:0;
+            padding:0;
+        }
+        header{
+            background-color:#206bc4;
+            color:white;
+            text-align:center;
+            padding:20px 10px;
+        }
+        nav{
+            background:#fff;
+            padding:12px;
+            text-align:center;
+            border-bottom:1px solid #ddd;
+        }
+        nav a{
+            margin:0 10px;
+            color:#206bc4;
+            text-decoration:none;
+        }
+        .container{
+            max-width:900px;
+            margin:30px auto;
+            padding:0 20px;
+        }
+        .chat-box{
+            border:1px solid #cccccc;
+            min-height:350px;
+            padding:15px;
+            overflow-y:auto;
+            margin-bottom:20px;
+        }
+        .msg-bot{
+            background:#e9ecef;
+            padding:8px 12px;
+            border-radius:6px;
+            max-width:70%;
+            margin:6px 0;
+        }
+        .msg-user{
+            background:#206bc4;
+            color:white;
+            padding:8px 12px;
+            border-radius:6px;
+            max-width:70%;
+            margin:6px 0 6px auto;
+            text-align:right;
+        }
+        .input-area{
+            display:flex;
+            gap:8px;
+        }
+        #question{
+            flex:1;
+            padding:10px;
+            font-size:16px;
+        }
+        #sendBtn{
+            padding:10px 22px;
+            background:#206bc4;
+            color:white;
+            border:none;
+            border-radius:4px;
+            cursor:pointer;
+        }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Network AI Chatbot</h1>
-        <p>Ask questions about computer networking</p >
-    </header>
-    <nav>
-        <a href=" ">Home</a >
-        <a href="port-sim.html">Virtual Port Simulator</a >
-        <a href="calculator.html">Subnet Calculator</a >
-        <a href="chatbot.html">Network AI Chatbot</a >
-        <a href="lab-quiz.html">Lab Quiz</a >
-        <a href="login.html">Login / Register</a >
-    </nav>
-    <div class="container">
-        <div class="chat-window" id="chatBox">
-            <div class="bot"><span>Loading local AI model, please wait. After downloading, you can ask me any computer network questions.</span></div>
-        </div>
-        <div class="input-area">
-            <input id="question" placeholder="Type your networking question here...">
-            <button onclick="sendMessage()">Send</button>
-        </div>
+<header>
+    <h1>Network AI Chatbot</h1>
+    <p>Ask questions about computer networking</p >
+</header>
+<nav>
+    <a href=" ">Home</a >
+    <a href="#">Virtual Port Simulator</a >
+    <a href="#">Subnet Calculator</a >
+    <a href="#">Network AI Chatbot</a >
+    <a href="#">Lab Quiz</a >
+    <a href="#">Login / Register</a >
+</nav>
+
+<div class="container">
+    <div class="chat-box" id="chatWindow">
+        <div class="msg-bot">Hello! You can ask me questions about networking hardware, subnetting, RAID, BIOS, network devices and more.</div>
     </div>
+    <div class="input-area">
+        <input type="text" id="question" placeholder="Type your networking question here...">
+        <button id="sendBtn">Send</button>
+    </div>
+</div>
 
 <script>
-const chatBox = document.getElementById("chatBox");
-const systemPrompt = "You are a professional computer networking tutor. Answer concisely, focus on IT Essential, subnetting, OSI model, network devices, ports, security. Reply in English.";
+const chatWindow = document.getElementById('chatWindow');
+const inputBox = document.getElementById('question');
+const sendBtn = document.getElementById('sendBtn');
 
-async function sendMessage(){
-    let inputBox = document.getElementById("question");
-    let text = inputBox.value.trim();
-    if(text === "") return;
+//知识库：关键词匹配 + 标准答案
+const knowledgeBase = [
+    {
+        keywords:["switch","交换机"],
+        answer:"A switch works on Layer 2 (Data Link Layer). It uses MAC addresses to forward data inside the same local network."
+    },
+    {
+        keywords:["router","路由器"],
+        answer:"A router operates on Layer 3 (Network Layer). It uses IP addresses to connect different networks and route packets between subnets."
+    },
+    {
+        keywords:["difference","switch router"],
+        answer:"Switch: Layer2, MAC address, same LAN.\nRouter: Layer3, IP address, connect multiple networks."
+    },
+    {
+        keywords:["bios","uefi","cmos"],
+        answer:"BIOS/UEFI is firmware to initialize hardware. CMOS stores hardware configuration settings and requires a small battery to keep data."
+    },
+    {
+        keywords:["raid 0"],
+        answer:"RAID 0: Striping. Improve speed, NO redundancy. If one disk fails, all data lost."
+    },
+    {
+        keywords:["raid 1"],
+        answer:"RAID 1: Mirroring. Two disks copy identical data. Fault tolerance, half storage efficiency."
+    },
+    {
+        keywords:["port scan","端口扫描"],
+        answer:"Port scan detects open ports on a host. Administrators use it for security checking; attackers may use it to find vulnerabilities."
+    },
+    {
+        keywords:["subnet","子网划分","ip address"],
+        answer:"Subnetting divides a large network into smaller subnets. It reduces network traffic and improves network management."
+    },
+    {
+        keywords:["printer","打印机"],
+        answer:"A network printer can be shared in LAN. Multiple computers can send print jobs over the local network."
+    },
+    {
+        keywords:["static ip","dhcp"],
+        answer:"DHCP automatically assigns IP addresses to devices. Static IP is manually configured and will not change."
+    }
+];
 
-    chatBox.innerHTML += `<div class="user"><span>${text}</span></div>`;
+const defaultReply = "Sorry, I have not learned this knowledge yet. Please try another question about computer networking."
+
+//简易模糊匹配算法
+function getAnswer(text){
+    const lowerText = text.toLowerCase();
+    for(let item of knowledgeBase){
+        for(let word of item.keywords){
+            if(lowerText.includes(word.toLowerCase())){
+                return item.answer;
+            }
+        }
+    }
+    return defaultReply;
+}
+
+//页面渲染消息
+function addMessage(text, isUser){
+    const div = document.createElement('div');
+    div.className = isUser ? "msg-user" : "msg-bot";
+    div.innerText = text;
+    chatWindow.appendChild(div);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+//发送逻辑
+function sendChat(){
+    const text = inputBox.value.trim();
+    if(!text) return;
+    addMessage(text, true);
     inputBox.value = "";
-    chatBox.scrollTop = chatBox.scrollHeight;
+    //模拟轻微延迟，更像AI
+    setTimeout(()=>{
+        const reply = getAnswer(text);
+        addMessage(reply, false);
+    }, 400);
+}
 
-    if(!window.ready){
-        chatBox.innerHTML += `<div class="bot"><span>Model still loading, please wait a moment.</span></div>`;
-        return;
-    }
-
-    let replyDiv = document.createElement("div");
-    replyDiv.className="bot";
-    let span = document.createElement("span");
-    replyDiv.appendChild(span);
-    chatBox.appendChild(replyDiv);
-
-    const stream = await window.llmEngine.chat.completions.create({
-        messages: [
-            {role:"system", content:systemPrompt},
-            {role:"user", content:text}
-        ],
-        stream:true
-    });
-    let fullText = "";
-    for await (const chunk of stream){
-        fullText += chunk.choices[0]?.delta?.content || "";
-        span.innerText = fullText;
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
+sendBtn.onclick = sendChat;
+inputBox.onkeydown = (e)=>{
+    if(e.key === "Enter") sendChat();
 }
 </script>
+
 </body>
 </html>
