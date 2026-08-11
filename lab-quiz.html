@@ -49,11 +49,19 @@
             border-radius:4px;
             font-size:16px;
             cursor:pointer;
+            margin-right:10px;
+            margin-top:10px;
+        }
+        .submit-all:hover{
+            background:#1a5099;
         }
         .result{
             margin-top:20px;
             font-size:18px;
             font-weight:bold;
+            padding:15px;
+            border-radius:5px;
+            background:#e8f5e9;
         }
         .correct{
             color:#238823;
@@ -61,124 +69,315 @@
         .wrong{
             color:#d62828;
         }
+        .retry-btn{
+            padding:12px 26px;
+            background:#28a745;
+            color:white;
+            border:none;
+            border-radius:4px;
+            font-size:16px;
+            cursor:pointer;
+            margin-right:10px;
+            margin-top:10px;
+            display:none;
+        }
+        .retry-btn:hover{
+            background:#218838;
+        }
+        .show-answers-btn{
+            padding:12px 26px;
+            background:#ffc107;
+            color:black;
+            border:none;
+            border-radius:4px;
+            font-size:16px;
+            cursor:pointer;
+            margin-right:10px;
+            margin-top:10px;
+            display:none;
+        }
+        .show-answers-btn:hover{
+            background:#e0a800;
+        }
+        .answer-explanation{
+            display:none;
+            background:#fff3cd;
+            border-left:4px solid #ffc107;
+            padding:12px;
+            margin-top:10px;
+            border-radius:4px;
+        }
+        .explanation-title{
+            font-weight:bold;
+            color:#856404;
+        }
+        .correct-answer{
+            color:#238823;
+            font-weight:bold;
+        }
+        .user-answer{
+            color:#d62828;
+            font-weight:bold;
+        }
     </style>
 </head>
 <body>
 <header>
     <h1>Lab Quiz</h1>
-    <p>Computer Hardware & Networking Practice</p >
+    <p>Computer Hardware & Networking Practice</p>
 </header>
 <nav>
-    <a href=" ">Home</a >
-    <a href="#">Virtual Port Simulator</a >
-    <a href="#">Subnet Calculator</a >
-    <a href="chatbot.html">Network AI Chatbot</a >
-    <a href="#">Lab Quiz</a >
-    <a href="#">Login / Register</a >
+    <a href=" ">Home</a>
+    <a href="#">Virtual Port Simulator</a>
+    <a href="#">Subnet Calculator</a>
+    <a href="chatbot.html">Network AI Chatbot</a>
+    <a href="#">Lab Quiz</a>
+    <a href="#">Login / Register</a>
 </nav>
 
 <div class="container">
-    <div class="question-block">
-        <p>1. Which layer does a switch operate on?</p >
-        <label><input type="radio" name="q1" value="A"> Layer 1</label><br>
-        <label><input type="radio" name="q1" value="B"> Layer 2</label><br>
-        <label><input type="radio" name="q1" value="C"> Layer 3</label><br>
-        <label><input type="radio" name="q1" value="D"> Layer 4</label>
-    </div>
-    <div class="question-block">
-        <p>2. What is the main function of a router?</p >
-        <label><input type="radio" name="q2" value="A"> Forward frames inside LAN</label><br>
-        <label><input type="radio" name="q2" value="B"> Connect different networks</label><br>
-        <label><input type="radio" name="q2" value="C"> Prevent ESD damage</label><br>
-        <label><input type="radio" name="q2" value="D"> Manage display output</label>
-    </div>
-    <div class="question-block">
-        <p>3. What does CMOS battery store?</p >
-        <label><input type="radio" name="q3" value="A"> Operating system files</label><br>
-        <label><input type="radio" name="q3" value="B"> BIOS configuration and system time</label><br>
-        <label><input type="radio" name="q3" value="C"> User documents</label><br>
-        <label><input type="radio" name="q3" value="D"> Network IP addresses</label>
-    </div>
-    <div class="question-block">
-        <p>4. Which RAID level provides mirroring?</p >
-        <label><input type="radio" name="q4" value="A"> RAID 0</label><br>
-        <label><input type="radio" name="q4" value="B"> RAID 1</label><br>
-        <label><input type="radio" name="q4" value="C"> RAID 5</label><br>
-        <label><input type="radio" name="q4" value="D"> RAID 10</label>
-    </div>
-    <div class="question-block">
-        <p>5. What tool protects hardware from ESD?</p >
-        <label><input type="radio" name="q5" value="A"> Surge protector</label><br>
-        <label><input type="radio" name="q5" value="B"> Anti-static wrist strap</label><br>
-        <label><input type="radio" name="q5" value="C"> Compressed air</label><br>
-        <label><input type="radio" name="q5" value="D"> UPS</label>
-    </div>
-    <div class="question-block">
-        <p>6. What information does DHCP assign automatically?</p >
-        <label><input type="radio" name="q6" value="A"> MAC address</label><br>
-        <label><input type="radio" name="q6" value="B"> IP address</label><br>
-        <label><input type="radio" name="q6" value="C"> Boot order</label><br>
-        <label><input type="radio" name="q6" value="D"> Port number</label>
-    </div>
-    <div class="question-block">
-        <p>7. Minimum number of hard drives required for RAID 5?</p >
-        <label><input type="radio" name="q7" value="A"> 2</label><br>
-        <label><input type="radio" name="q7" value="B"> 3</label><br>
-        <label><input type="radio" name="q7" value="C"> 4</label><br>
-        <label><input type="radio" name="q7" value="D"> 5</label>
-    </div>
-    <div class="question-block">
-        <p>8. Why do technicians use port scanning?</p >
-        <label><input type="radio" name="q8" value="A"> Check open ports for security audit</label><br>
-        <label><input type="radio" name="q8" value="B"> Clean hard disk dust</label><br>
-        <label><input type="radio" name="q8" value="C"> Adjust monitor brightness</label><br>
-        <label><input type="radio" name="q8" value="D"> Set static IP</label>
-    </div>
-    <div class="question-block">
-        <p>9. UTP cable stands for?</p >
-        <label><input type="radio" name="q9" value="A"> Unshielded Twisted Pair</label><br>
-        <label><input type="radio" name="q9" value="B"> Universal Transfer Protocol</label><br>
-        <label><input type="radio" name="q9" value="C"> Unified Twisted Port</label><br>
-        <label><input type="radio" name="q9" value="D"> Usable Transmission Pair</label>
-    </div>
-    <div class="question-block">
-        <p>10. What can protect computer against power surges?</p >
-        <label><input type="radio" name="q10" value="A"> Anti-static bag</label><br>
-        <label><input type="radio" name="q10" value="B"> Surge protector</label><br>
-        <label><input type="radio" name="q10" value="C"> CMOS battery</label><br>
-        <label><input type="radio" name="q10" value="D"> USB hub</label>
-    </div>
+    <div id="quizContainer">
+        <div class="question-block">
+            <p>1. Which layer does a switch operate on?</p>
+            <label><input type="radio" name="q1" value="A"> Layer 1</label><br>
+            <label><input type="radio" name="q1" value="B"> Layer 2</label><br>
+            <label><input type="radio" name="q1" value="C"> Layer 3</label><br>
+            <label><input type="radio" name="q1" value="D"> Layer 4</label>
+            <div class="answer-explanation" id="exp1">
+                <div class="explanation-title">Explanation:</div>
+                Switches operate at Layer 2 (Data Link Layer) of the OSI model. They use MAC addresses to forward frames within a local area network.
+            </div>
+        </div>
+        <div class="question-block">
+            <p>2. What is the main function of a router?</p>
+            <label><input type="radio" name="q2" value="A"> Forward frames inside LAN</label><br>
+            <label><input type="radio" name="q2" value="B"> Connect different networks</label><br>
+            <label><input type="radio" name="q2" value="C"> Prevent ESD damage</label><br>
+            <label><input type="radio" name="q2" value="D"> Manage display output</label>
+            <div class="answer-explanation" id="exp2">
+                <div class="explanation-title">Explanation:</div>
+                Routers connect different networks together using IP addresses at Layer 3 (Network Layer). They determine the best path for data to travel between networks.
+            </div>
+        </div>
+        <div class="question-block">
+            <p>3. What does CMOS battery store?</p>
+            <label><input type="radio" name="q3" value="A"> Operating system files</label><br>
+            <label><input type="radio" name="q3" value="B"> BIOS configuration and system time</label><br>
+            <label><input type="radio" name="q3" value="C"> User documents</label><br>
+            <label><input type="radio" name="q3" value="D"> Network IP addresses</label>
+            <div class="answer-explanation" id="exp3">
+                <div class="explanation-title">Explanation:</div>
+                The CMOS battery powers the BIOS configuration and maintains system time even when the computer is powered off.
+            </div>
+        </div>
+        <div class="question-block">
+            <p>4. Which RAID level provides mirroring?</p>
+            <label><input type="radio" name="q4" value="A"> RAID 0</label><br>
+            <label><input type="radio" name="q4" value="B"> RAID 1</label><br>
+            <label><input type="radio" name="q4" value="C"> RAID 5</label><br>
+            <label><input type="radio" name="q4" value="D"> RAID 10</label>
+            <div class="answer-explanation" id="exp4">
+                <div class="explanation-title">Explanation:</div>
+                RAID 1 provides data mirroring, which means data is duplicated on two drives for redundancy and protection against single drive failure.
+            </div>
+        </div>
+        <div class="question-block">
+            <p>5. What tool protects hardware from ESD?</p>
+            <label><input type="radio" name="q5" value="A"> Surge protector</label><br>
+            <label><input type="radio" name="q5" value="B"> Anti-static wrist strap</label><br>
+            <label><input type="radio" name="q5" value="C"> Compressed air</label><br>
+            <label><input type="radio" name="q5" value="D"> UPS</label>
+            <div class="answer-explanation" id="exp5">
+                <div class="explanation-title">Explanation:</div>
+                An anti-static wrist strap safely grounds you to prevent Electrostatic Discharge (ESD), which can damage sensitive computer components.
+            </div>
+        </div>
+        <div class="question-block">
+            <p>6. What information does DHCP assign automatically?</p>
+            <label><input type="radio" name="q6" value="A"> MAC address</label><br>
+            <label><input type="radio" name="q6" value="B"> IP address</label><br>
+            <label><input type="radio" name="q6" value="C"> Boot order</label><br>
+            <label><input type="radio" name="q6" value="D"> Port number</label>
+            <div class="answer-explanation" id="exp6">
+                <div class="explanation-title">Explanation:</div>
+                DHCP (Dynamic Host Configuration Protocol) automatically assigns IP addresses to devices on a network, reducing manual configuration.
+            </div>
+        </div>
+        <div class="question-block">
+            <p>7. Minimum number of hard drives required for RAID 5?</p>
+            <label><input type="radio" name="q7" value="A"> 2</label><br>
+            <label><input type="radio" name="q7" value="B"> 3</label><br>
+            <label><input type="radio" name="q7" value="C"> 4</label><br>
+            <label><input type="radio" name="q7" value="D"> 5</label>
+            <div class="answer-explanation" id="exp7">
+                <div class="explanation-title">Explanation:</div>
+                RAID 5 requires a minimum of 3 hard drives to stripe data with parity across multiple drives for fault tolerance.
+            </div>
+        </div>
+        <div class="question-block">
+            <p>8. Why do technicians use port scanning?</p>
+            <label><input type="radio" name="q8" value="A"> Check open ports for security audit</label><br>
+            <label><input type="radio" name="q8" value="B"> Clean hard disk dust</label><br>
+            <label><input type="radio" name="q8" value="C"> Adjust monitor brightness</label><br>
+            <label><input type="radio" name="q8" value="D"> Set static IP</label>
+            <div class="answer-explanation" id="exp8">
+                <div class="explanation-title">Explanation:</div>
+                Port scanning is used to identify open ports on a system for security auditing and checking for potential vulnerabilities.
+            </div>
+        </div>
+        <div class="question-block">
+            <p>9. UTP cable stands for?</p>
+            <label><input type="radio" name="q9" value="A"> Unshielded Twisted Pair</label><br>
+            <label><input type="radio" name="q9" value="B"> Universal Transfer Protocol</label><br>
+            <label><input type="radio" name="q9" value="C"> Unified Twisted Port</label><br>
+            <label><input type="radio" name="q9" value="D"> Usable Transmission Pair</label>
+            <div class="answer-explanation" id="exp9">
+                <div class="explanation-title">Explanation:</div>
+                UTP (Unshielded Twisted Pair) is a common networking cable type used in Ethernet connections without additional shielding.
+            </div>
+        </div>
+        <div class="question-block">
+            <p>10. What can protect computer against power surges?</p>
+            <label><input type="radio" name="q10" value="A"> Anti-static bag</label><br>
+            <label><input type="radio" name="q10" value="B"> Surge protector</label><br>
+            <label><input type="radio" name="q10" value="C"> CMOS battery</label><br>
+            <label><input type="radio" name="q10" value="D"> USB hub</label>
+            <div class="answer-explanation" id="exp10">
+                <div class="explanation-title">Explanation:</div>
+                A surge protector detects and stops sudden voltage spikes from reaching your computer, protecting against power surges.
+            </div>
+        </div>
 
-    <button class="submit-all" onclick="checkAnswer()">Submit All Answers</button>
-    <div class="result" id="resultArea"></div>
+        <button class="submit-all" onclick="submitQuiz()">Submit All Answers</button>
+        <button class="show-answers-btn" id="showAnswersBtn" onclick="toggleAnswers()">Show Correct Answers</button>
+        <button class="retry-btn" id="retryBtn" onclick="retryQuiz()">Retry Quiz</button>
+        
+        <div class="result" id="resultArea"></div>
+    </div>
 </div>
 
 <script>
-//标准答案
+// ===== BEGINNER-FRIENDLY QUIZ SCRIPT =====
+// This script is written to be easy to understand and modify
+
+// Step 1: Define the correct answers in a dictionary/object
+// Think of it like a key that unlocks the correct answers
 const answerKey = {
-    q1:"B",
-    q2:"B",
-    q3:"B",
-    q4:"B",
-    q5:"B",
-    q6:"B",
-    q7:"B",
-    q8:"A",
-    q9:"A",
-    q10:"B"
+    q1: "B",   // Switch operates on Layer 2
+    q2: "B",   // Router connects different networks
+    q3: "B",   // CMOS stores BIOS and system time
+    q4: "B",   // RAID 1 provides mirroring
+    q5: "B",   // Anti-static wrist strap protects from ESD
+    q6: "B",   // DHCP assigns IP address
+    q7: "B",   // RAID 5 needs minimum 3 drives
+    q8: "A",   // Port scanning checks for open ports
+    q9: "A",   // UTP = Unshielded Twisted Pair
+    q10: "B"   // Surge protector protects against power surges
 };
 
-function checkAnswer(){
+// Step 2: Create a variable to track if quiz has been submitted
+let quizSubmitted = false;
+
+// Step 3: Function to check answers and calculate score
+// This function runs when user clicks "Submit All Answers"
+function submitQuiz() {
+    // Initialize score counter to 0
     let score = 0;
+    
+    // Count total number of questions
     let total = Object.keys(answerKey).length;
-    for(let key in answerKey){
-        let userAns = document.querySelector(`input[name="${key}"]:checked`);
-        if(userAns && userAns.value === answerKey[key]){
-            score++;
+    
+    // Loop through each question in answerKey
+    for (let questionName in answerKey) {
+        // Get the user's selected answer for this question
+        let userSelectedAnswer = document.querySelector(`input[name="${questionName}"]:checked`);
+        
+        // Check if user selected an answer AND if it matches the correct answer
+        if (userSelectedAnswer && userSelectedAnswer.value === answerKey[questionName]) {
+            score++;  // Add 1 to score for correct answer
         }
     }
-    document.getElementById("resultArea").innerHTML =
-    `Your Score: ${score} / ${total}`;
+    
+    // Calculate the percentage score
+    let percentage = Math.round((score / total) * 100);
+    
+    // Determine if the score is passing or not
+    let scoreStatus = percentage >= 70 ? "PASS ✓" : "FAIL ✗";
+    let scoreColor = percentage >= 70 ? "correct" : "wrong";
+    
+    // Display the result to the user
+    document.getElementById("resultArea").innerHTML = `
+        <p class="${scoreColor}">Your Score: ${score} / ${total} (${percentage}%)</p>
+        <p class="${scoreColor}">Status: ${scoreStatus}</p>
+    `;
+    
+    // Show the retry and show answers buttons
+    document.getElementById("retryBtn").style.display = "inline-block";
+    document.getElementById("showAnswersBtn").style.display = "inline-block";
+    
+    // Mark quiz as submitted so we can show answers
+    quizSubmitted = true;
+}
+
+// Step 4: Function to toggle (show/hide) correct answers and explanations
+function toggleAnswers() {
+    // Check if quiz has been submitted first
+    if (!quizSubmitted) {
+        alert("Please submit your answers first!");
+        return;
+    }
+    
+    // Get all explanation elements
+    let explanations = document.querySelectorAll(".answer-explanation");
+    
+    // Loop through each explanation and toggle its display
+    explanations.forEach(function(explanation) {
+        // If display is none, change to block (show it)
+        // If display is block, change to none (hide it)
+        if (explanation.style.display === "none") {
+            explanation.style.display = "block";
+        } else {
+            explanation.style.display = "none";
+        }
+    });
+    
+    // Change button text based on whether answers are shown
+    let button = document.getElementById("showAnswersBtn");
+    if (button.textContent === "Show Correct Answers") {
+        button.textContent = "Hide Correct Answers";
+    } else {
+        button.textContent = "Show Correct Answers";
+    }
+}
+
+// Step 5: Function to reset the quiz for retry
+// This allows students to take the quiz again
+function retryQuiz() {
+    // Uncheck all radio buttons (clear all answers)
+    let allRadioButtons = document.querySelectorAll('input[type="radio"]');
+    allRadioButtons.forEach(function(radio) {
+        radio.checked = false;
+    });
+    
+    // Clear the result display
+    document.getElementById("resultArea").innerHTML = "";
+    
+    // Hide the retry and show answers buttons
+    document.getElementById("retryBtn").style.display = "none";
+    document.getElementById("showAnswersBtn").style.display = "none";
+    document.getElementById("showAnswersBtn").textContent = "Show Correct Answers";
+    
+    // Hide all explanations
+    let explanations = document.querySelectorAll(".answer-explanation");
+    explanations.forEach(function(explanation) {
+        explanation.style.display = "none";
+    });
+    
+    // Reset the submitted flag
+    quizSubmitted = false;
+    
+    // Scroll to top so user can start fresh
+    window.scrollTo(0, 0);
 }
 </script>
 
