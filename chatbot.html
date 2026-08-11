@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Network AI Chatbot | NetStudy</title>
+    <script type="module">
+        import { createWebLLM } from "https://cdn.jsdelivr.net/npm/@webllm/webllm@0.2.1/dist/webllm.min.js";
+        window.llmEngine = await createWebLLM({
+            model: "Llama-3-8B-Instruct-q4f32_1-MLC",
+        });
+        window.ready = true;
+    </script>
     <style>
         *{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
         header{background:#1565C0;color:#fff;padding:20px;text-align:center;}
@@ -14,7 +21,7 @@
         .user{text-align:right;margin:8px 0;}
         .bot{text-align:left;margin:8px 0;}
         .user span{background:#1565C0;color:white;padding:8px 12px;border-radius:6px;display:inline-block;max-width:75%;}
-        .bot span{background:#e4e4e4;color:#222;padding:8px 12px;border-radius:6px;display:inline-block;max-width:75%;}
+        .bot span{background:#e4e4e4;color:#222;padding:8px 12px;border-radius:6px;display:inline-block;max-width:75%;white-space:pre-wrap;}
         .input-area{display:flex;gap:8px;}
         #question{flex:1;padding:10px;font-size:15px;}
         button{background:#1565C0;color:white;border:none;padding:10px 20px;border-radius:4px;cursor:pointer;}
@@ -35,7 +42,7 @@
     </nav>
     <div class="container">
         <div class="chat-window" id="chatBox">
-            <div class="bot"><span>Hello! You can ask me questions about subnetting, switches, ARP, ports, duplex mode and more.</span></div>
+            <div class="bot"><span>Loading local AI model, please wait. After downloading, you can ask me any computer network questions.</span></div>
         </div>
         <div class="input-area">
             <input id="question" placeholder="Type your networking question here...">
@@ -45,41 +52,41 @@
 
 <script>
 const chatBox = document.getElementById("chatBox");
-const answerLibrary = [
-    {key:"subnet", reply:"Subnetting divides one large network into smaller networks. It reduces network traffic and improves security."},
-    {key:"arp", reply:"ARP (Address Resolution Protocol) converts IP address into MAC address inside local LAN."},
-    {key:"switch", reply:"A switch forwards frames based on MAC address table. It works at Layer 2 of OSI model."},
-    {key:"router", reply:"Router connects different networks and forwards packets using IP address. It works at Layer 3."},
-    {key:"port scan", reply:"Port scan checks which ports are open on a host. Unauthorized scanning is illegal in many regions."},
-    {key:"duplex", reply:"Full duplex allows sending and receiving data at the same time. Half duplex can only do one direction at a time."},
-    {key:"bios", reply:"BIOS / UEFI is firmware to initialize hardware before operating system loads."},
-    {key:"raid", reply:"RAID uses multiple disks for data redundancy or better performance."},
-    {key:"ip", reply:"IPv4 address identifies each device on the network. Format example: 192.168.1.10"},
-    {key:"mac", reply:"MAC address is a permanent physical address burned on network adapter."}
-];
+const systemPrompt = "You are a professional computer networking tutor. Answer concisely, focus on IT Essential, subnetting, OSI model, network devices, ports, security. Reply in English.";
 
-function sendMessage(){
+async function sendMessage(){
     let inputBox = document.getElementById("question");
     let text = inputBox.value.trim();
     if(text === "") return;
-    // 显示用户消息
+
     chatBox.innerHTML += `<div class="user"><span>${text}</span></div>`;
     inputBox.value = "";
-    let lowerText = text.toLowerCase();
-    let foundReply = null;
-    for(let item of answerLibrary){
-        if(lowerText.includes(item.key)){
-            foundReply = item.reply;
-            break;
-        }
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    if(!window.ready){
+        chatBox.innerHTML += `<div class="bot"><span>Model still loading, please wait a moment.</span></div>`;
+        return;
     }
-    if(!foundReply){
-        foundReply = "Sorry, I can only answer computer network related questions.";
-    }
-    setTimeout(()=>{
-        chatBox.innerHTML += `<div class="bot"><span>${foundReply}</span></div>`;
+
+    let replyDiv = document.createElement("div");
+    replyDiv.className="bot";
+    let span = document.createElement("span");
+    replyDiv.appendChild(span);
+    chatBox.appendChild(replyDiv);
+
+    const stream = await window.llmEngine.chat.completions.create({
+        messages: [
+            {role:"system", content:systemPrompt},
+            {role:"user", content:text}
+        ],
+        stream:true
+    });
+    let fullText = "";
+    for await (const chunk of stream){
+        fullText += chunk.choices[0]?.delta?.content || "";
+        span.innerText = fullText;
         chatBox.scrollTop = chatBox.scrollHeight;
-    }, 600);
+    }
 }
 </script>
 </body>
