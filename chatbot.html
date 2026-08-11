@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network AI Chatbot | NetStudy</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
+        header{background:#1565C0;color:#fff;padding:20px;text-align:center;}
+        nav{background:#EEEEEE;padding:16px;text-align:center;}
+        nav a{margin:0 12px;text-decoration:none;color:#1565C0;font-weight:bold;}
+        .container{width:90%;max-width:750px;margin:30px auto;}
+        .chat-window{border:1px solid #ddd;border-radius:8px;padding:20px;height:420px;overflow-y:auto;margin-bottom:15px;background:#fafafa;}
+        .user{text-align:right;margin:8px 0;}
+        .bot{text-align:left;margin:8px 0;}
+        .user span{background:#1565C0;color:white;padding:8px 12px;border-radius:6px;display:inline-block;max-width:75%;}
+        .bot span{background:#e4e4e4;color:#222;padding:8px 12px;border-radius:6px;display:inline-block;max-width:75%;}
+        .input-area{display:flex;gap:8px;}
+        #question{flex:1;padding:10px;font-size:15px;}
+        button{background:#1565C0;color:white;border:none;padding:10px 20px;border-radius:4px;cursor:pointer;}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Network AI Chatbot</h1>
+        <p>Ask questions about computer networking</p >
+    </header>
+    <nav>
+        <a href=" ">Home</a >
+        <a href="port-sim.html">Virtual Port Simulator</a >
+        <a href="calculator.html">Subnet Calculator</a >
+        <a href="chatbot.html">Network AI Chatbot</a >
+        <a href="lab-quiz.html">Lab Quiz</a >
+        <a href="login.html">Login / Register</a >
+    </nav>
+    <div class="container">
+        <div class="chat-window" id="chatBox">
+            <div class="bot"><span>Hello! You can ask me questions about subnetting, switches, ARP, ports, duplex mode and more.</span></div>
+        </div>
+        <div class="input-area">
+            <input id="question" placeholder="Type your networking question here...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+<script>
+const chatBox = document.getElementById("chatBox");
+const answerLibrary = [
+    {key:"subnet", reply:"Subnetting divides one large network into smaller networks. It reduces network traffic and improves security."},
+    {key:"arp", reply:"ARP (Address Resolution Protocol) converts IP address into MAC address inside local LAN."},
+    {key:"switch", reply:"A switch forwards frames based on MAC address table. It works at Layer 2 of OSI model."},
+    {key:"router", reply:"Router connects different networks and forwards packets using IP address. It works at Layer 3."},
+    {key:"port scan", reply:"Port scan checks which ports are open on a host. Unauthorized scanning is illegal in many regions."},
+    {key:"duplex", reply:"Full duplex allows sending and receiving data at the same time. Half duplex can only do one direction at a time."},
+    {key:"bios", reply:"BIOS / UEFI is firmware to initialize hardware before operating system loads."},
+    {key:"raid", reply:"RAID uses multiple disks for data redundancy or better performance."},
+    {key:"ip", reply:"IPv4 address identifies each device on the network. Format example: 192.168.1.10"},
+    {key:"mac", reply:"MAC address is a permanent physical address burned on network adapter."}
+];
+
+function sendMessage(){
+    let inputBox = document.getElementById("question");
+    let text = inputBox.value.trim();
+    if(text === "") return;
+    // 显示用户消息
+    chatBox.innerHTML += `<div class="user"><span>${text}</span></div>`;
+    inputBox.value = "";
+    let lowerText = text.toLowerCase();
+    let foundReply = null;
+    for(let item of answerLibrary){
+        if(lowerText.includes(item.key)){
+            foundReply = item.reply;
+            break;
+        }
+    }
+    if(!foundReply){
+        foundReply = "Sorry, I can only answer computer network related questions.";
+    }
+    setTimeout(()=>{
+        chatBox.innerHTML += `<div class="bot"><span>${foundReply}</span></div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }, 600);
+}
+</script>
+</body>
+</html>
