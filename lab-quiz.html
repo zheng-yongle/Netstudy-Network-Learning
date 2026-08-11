@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Quiz | NetStudy</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
+        header{background:#1565C0;color:#fff;padding:20px;text-align:center;}
+        nav{background:#EEEEEE;padding:16px;text-align:center;}
+        nav a{margin:0 12px;text-decoration:none;color:#1565C0;font-weight:bold;}
+        .container{width:90%;max-width:800px;margin:30px auto;}
+        .card{border:1px solid #ddd;border-radius:8px;padding:22px;margin-bottom:20px;}
+        h3{color:#1565C0;margin-bottom:12px;}
+        .question{margin:16px 0;}
+        .submit-btn{background:#1565C0;color:white;border:none;padding:11px 24px;border-radius:4px;font-size:16px;cursor:pointer;}
+        #result{margin-top:20px;padding:15px;border-radius:6px;display:none;}
+        .correct{color:green;}
+        .wrong{color:red;}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Network Lab Quiz</h1>
+        <p>Test your networking knowledge</p >
+    </header>
+    <nav>
+        <a href=" ">Home</a >
+        <a href="port-sim.html">Virtual Port Simulator</a >
+        <a href="calculator.html">Subnet Calculator</a >
+        <a href="chatbot.html">Network AI Chatbot</a >
+        <a href="lab-quiz.html">Lab Quiz</a >
+        <a href="login.html">Login / Register</a >
+    </nav>
+    <div class="container">
+        <div class="card">
+            <div class="question">
+                <p>1. Which device works on OSI Layer 3?</p >
+                <label><input type="radio" name="q1" value="switch"> Switch</label><br>
+                <label><input type="radio" name="q1" value="router"> Router</label><br>
+                <label><input type="radio" name="q1" value="hub"> Hub</label>
+            </div>
+            <div class="question">
+                <p>2. What does ARP do?</p >
+                <label><input type="radio" name="q2" value="ip-mac"> Convert IP address to MAC address</label><br>
+                <label><input type="radio" name="q2" value="mac-ip"> Convert MAC address to IP address</label><br>
+                <label><input type="radio" name="q2" value="domain"> Resolve domain name</label>
+            </div>
+            <div class="question">
+                <p>3. Port 443 is used for:</p >
+                <label><input type="radio" name="q3" value="http"> HTTP</label><br>
+                <label><input type="radio" name="q3" value="https"> HTTPS</label><br>
+                <label><input type="radio" name="q3" value="ftp"> FTP</label>
+            </div>
+            <div class="question">
+                <p>4. Subnetting helps to:</p >
+                <label><input type="radio" name="q4" value="split"> Split large network into smaller networks</label><br>
+                <label><input type="radio" name="q4" value="encrypt"> Encrypt data transmission</label><br>
+                <label><input type="radio" name="q4" value="increase"> Increase internet speed</label>
+            </div>
+            <button class="submit-btn" onclick="checkAnswer()">Submit Answers</button>
+            <div id="result"></div>
+        </div>
+    </div>
+
+<script>
+function checkAnswer(){
+    let score = 0;
+    let feedback = "";
+    // 正确答案
+    const ans = {q1:"router", q2:"ip-mac", q3:"https", q4:"split"};
+    let q1 = document.querySelector('input[name="q1"]:checked');
+    let q2 = document.querySelector('input[name="q2"]:checked');
+    let q3 = document.querySelector('input[name="q3"]:checked');
+    let q4 = document.querySelector('input[name="q4"]:checked');
+    if(!q1||!q2||!q3||!q4){
+        alert("Please complete all questions!");
+        return;
+    }
+    if(q1.value === ans.q1) score++;
+    if(q2.value === ans.q2) score++;
+    if(q3.value === ans.q3) score++;
+    if(q4.value === ans.q4) score++;
+
+    feedback += `<p>Your score: ${score}/4</p >`;
+    feedback += `<p>Q1 Correct answer: Router (Layer 3)</p >`;
+    feedback += `<p>Q2 Correct answer: Convert IP address to MAC address</p >`;
+    feedback += `<p>Q3 Correct answer: HTTPS</p >`;
+    feedback += `<p>Q4 Correct answer: Split large network into smaller networks</p >`;
+    
+    let resBox = document.getElementById("result");
+    resBox.style.display = "block";
+    resBox.innerHTML = feedback;
+}
+</script>
+</body>
+</html>
