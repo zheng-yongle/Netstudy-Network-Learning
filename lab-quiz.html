@@ -119,6 +119,20 @@
             color:#d62828;
             font-weight:bold;
         }
+        
+        /* Styles for highlighting correct answer radio buttons */
+        .correct-answer-highlight {
+            accent-color: #28a745; /* Green color for correct answer */
+        }
+        
+        .correct-answer-label {
+            color: #238823;
+            font-weight: bold;
+            background-color: #e8f5e9;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -278,7 +292,10 @@ const answerKey = {
 // Step 2: Create a variable to track if quiz has been submitted
 let quizSubmitted = false;
 
-// Step 3: Function to check answers and calculate score
+// Step 3: Create a variable to track if answers are shown
+let answersShown = false;
+
+// Step 4: Function to check answers and calculate score
 // This function runs when user clicks "Submit All Answers"
 function submitQuiz() {
     // Initialize score counter to 0
@@ -319,7 +336,7 @@ function submitQuiz() {
     quizSubmitted = true;
 }
 
-// Step 4: Function to toggle (show/hide) correct answers and explanations
+// Step 5: Function to toggle (show/hide) correct answers and explanations
 function toggleAnswers() {
     // Check if quiz has been submitted first
     if (!quizSubmitted) {
@@ -327,19 +344,48 @@ function toggleAnswers() {
         return;
     }
     
+    // Toggle the answersShown state
+    answersShown = !answersShown;
+    
     // Get all explanation elements
     let explanations = document.querySelectorAll(".answer-explanation");
     
     // Loop through each explanation and toggle its display
     explanations.forEach(function(explanation) {
-        // If display is none, change to block (show it)
-        // If display is block, change to none (hide it)
-        if (explanation.style.display === "none") {
+        // If showing answers, display the explanation
+        if (answersShown) {
             explanation.style.display = "block";
         } else {
             explanation.style.display = "none";
         }
     });
+    
+    // Now highlight or unhighlight the correct answers
+    // Loop through all questions
+    for (let questionName in answerKey) {
+        // Get all radio buttons for this question
+        let radioButtons = document.querySelectorAll(`input[name="${questionName}"]`);
+        let correctAnswer = answerKey[questionName];
+        
+        // Loop through each radio button
+        radioButtons.forEach(function(radio) {
+            // Get the label that contains this radio button
+            let label = radio.parentElement;
+            
+            // Check if this is the correct answer
+            if (radio.value === correctAnswer) {
+                // If showing answers, highlight this radio button with green
+                if (answersShown) {
+                    radio.classList.add("correct-answer-highlight");
+                    label.classList.add("correct-answer-label");
+                } else {
+                    // If hiding answers, remove the highlighting
+                    radio.classList.remove("correct-answer-highlight");
+                    label.classList.remove("correct-answer-label");
+                }
+            }
+        });
+    }
     
     // Change button text based on whether answers are shown
     let button = document.getElementById("showAnswersBtn");
@@ -350,13 +396,20 @@ function toggleAnswers() {
     }
 }
 
-// Step 5: Function to reset the quiz for retry
+// Step 6: Function to reset the quiz for retry
 // This allows students to take the quiz again
 function retryQuiz() {
     // Uncheck all radio buttons (clear all answers)
     let allRadioButtons = document.querySelectorAll('input[type="radio"]');
     allRadioButtons.forEach(function(radio) {
         radio.checked = false;
+        radio.classList.remove("correct-answer-highlight");
+    });
+    
+    // Remove highlighting from all labels
+    let allLabels = document.querySelectorAll("label");
+    allLabels.forEach(function(label) {
+        label.classList.remove("correct-answer-label");
     });
     
     // Clear the result display
@@ -375,6 +428,9 @@ function retryQuiz() {
     
     // Reset the submitted flag
     quizSubmitted = false;
+    
+    // Reset the answers shown flag
+    answersShown = false;
     
     // Scroll to top so user can start fresh
     window.scrollTo(0, 0);
