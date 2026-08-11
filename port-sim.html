@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Port Simulator | NetStudy</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial, Helvetica, sans-serif;}
+        header{background:#1565C0;color:#fff;padding:20px;text-align:center;}
+        nav{background:#EEEEEE;padding:16px;text-align:center;}
+        nav a{margin:0 12px;text-decoration:none;color:#1565C0;font-weight:bold;}
+        .container{width:90%;max-width:1000px;margin:30px auto;}
+        .card{border:1px solid #ddd;border-radius:8px;padding:20px;margin-bottom:20px;}
+        h2,h3{color:#1565C0;margin-bottom:12px;}
+        p{line-height:1.7;color:#333;}
+        canvas{max-height:380px;}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Virtual Port Simulator</h1>
+        <p>Simulation of port exposure for education purpose only</p >
+    </header>
+    <nav>
+        <a href=" ">Home</a >
+        <a href="port-sim.html">Virtual Port Simulator</a >
+        <a href="calculator.html">Subnet Calculator</a >
+        <a href="chatbot.html">Network AI Chatbot</a >
+        <a href="lab-quiz.html">Lab Quiz</a >
+        <a href="login.html">Login / Register</a >
+    </nav>
+    <div class="container">
+        <div class="card">
+            <h3>Important Notice</h3>
+            <p>This tool <strong>DOES NOT</strong> perform real port scanning. All data is pre-simulated locally for teaching demonstration. No network request will be sent to any external server.</p >
+        </div>
+        <div class="card">
+            <canvas id="portChart"></canvas>
+        </div>
+        <div class="card">
+            <h3>Common Port Information</h3>
+            <p>80: HTTP Web Service<br>443: HTTPS Secure Web Service<br>21: FTP File Transfer (High Risk)<br>25: SMTP Email Service</p >
+            <p style="margin-top:10px;">Observation: Universities usually open more ports to provide public services. Companies keep fewer open ports to reduce security risks.</p >
+        </div>
+    </div>
+
+<script>
+const ctx = document.getElementById('portChart').getContext('2d');
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['NUS','SUTD','SMU','Capital Land'],
+        datasets: [{
+            label: 'Simulated Open Ports Count',
+            data: [8,7,6,3],
+            backgroundColor: '#1565C0'
+        }]
+    },
+    options:{
+        responsive:true
+    }
+});
+</script>
+</body>
+</html>
