@@ -35,6 +35,46 @@
             margin:30px auto;
             padding:0 20px;
         }
+        .quiz-selector{
+            background:#e8f5e9;
+            padding:20px;
+            border-radius:8px;
+            margin-bottom:30px;
+            text-align:center;
+            border:2px solid #4caf50;
+        }
+        .quiz-selector h2{
+            margin-top:0;
+            color:#1b5e20;
+        }
+        .quiz-button{
+            padding:12px 26px;
+            margin:10px;
+            font-size:16px;
+            border:none;
+            border-radius:4px;
+            cursor:pointer;
+            font-weight:bold;
+            transition:all 0.3s ease;
+        }
+        .quiz-button-active{
+            background:#4caf50;
+            color:white;
+            box-shadow:0 4px 8px rgba(0,0,0,0.2);
+        }
+        .quiz-button-inactive{
+            background:#ccc;
+            color:#666;
+        }
+        .quiz-button:hover:not(:disabled){
+            transform:scale(1.05);
+        }
+        .quiz-content{
+            display:none;
+        }
+        .quiz-content.active{
+            display:block;
+        }
         .question-block{
             background:#f8f9fa;
             padding:18px;
@@ -150,236 +190,412 @@
 </nav>
 
 <div class="container">
-    <div id="quizContainer">
-        <div class="question-block">
-            <p>1. Which layer does a switch operate on?</p>
-            <label><input type="radio" name="q1" value="A"> Layer 1</label><br>
-            <label><input type="radio" name="q1" value="B"> Layer 2</label><br>
-            <label><input type="radio" name="q1" value="C"> Layer 3</label><br>
-            <label><input type="radio" name="q1" value="D"> Layer 4</label>
-            <div class="answer-explanation" id="exp1">
-                <div class="explanation-title">Explanation:</div>
-                Switches operate at Layer 2 (Data Link Layer) of the OSI model. They use MAC addresses to forward frames within a local area network.
-            </div>
-        </div>
-        <div class="question-block">
-            <p>2. What is the main function of a router?</p>
-            <label><input type="radio" name="q2" value="A"> Forward frames inside LAN</label><br>
-            <label><input type="radio" name="q2" value="B"> Connect different networks</label><br>
-            <label><input type="radio" name="q2" value="C"> Prevent ESD damage</label><br>
-            <label><input type="radio" name="q2" value="D"> Manage display output</label>
-            <div class="answer-explanation" id="exp2">
-                <div class="explanation-title">Explanation:</div>
-                Routers connect different networks together using IP addresses at Layer 3 (Network Layer). They determine the best path for data to travel between networks.
-            </div>
-        </div>
-        <div class="question-block">
-            <p>3. What does CMOS battery store?</p>
-            <label><input type="radio" name="q3" value="A"> Operating system files</label><br>
-            <label><input type="radio" name="q3" value="B"> BIOS configuration and system time</label><br>
-            <label><input type="radio" name="q3" value="C"> User documents</label><br>
-            <label><input type="radio" name="q3" value="D"> Network IP addresses</label>
-            <div class="answer-explanation" id="exp3">
-                <div class="explanation-title">Explanation:</div>
-                The CMOS battery powers the BIOS configuration and maintains system time even when the computer is powered off.
-            </div>
-        </div>
-        <div class="question-block">
-            <p>4. Which RAID level provides mirroring?</p>
-            <label><input type="radio" name="q4" value="A"> RAID 0</label><br>
-            <label><input type="radio" name="q4" value="B"> RAID 1</label><br>
-            <label><input type="radio" name="q4" value="C"> RAID 5</label><br>
-            <label><input type="radio" name="q4" value="D"> RAID 10</label>
-            <div class="answer-explanation" id="exp4">
-                <div class="explanation-title">Explanation:</div>
-                RAID 1 provides data mirroring, which means data is duplicated on two drives for redundancy and protection against single drive failure.
-            </div>
-        </div>
-        <div class="question-block">
-            <p>5. What tool protects hardware from ESD?</p>
-            <label><input type="radio" name="q5" value="A"> Surge protector</label><br>
-            <label><input type="radio" name="q5" value="B"> Anti-static wrist strap</label><br>
-            <label><input type="radio" name="q5" value="C"> Compressed air</label><br>
-            <label><input type="radio" name="q5" value="D"> UPS</label>
-            <div class="answer-explanation" id="exp5">
-                <div class="explanation-title">Explanation:</div>
-                An anti-static wrist strap safely grounds you to prevent Electrostatic Discharge (ESD), which can damage sensitive computer components.
-            </div>
-        </div>
-        <div class="question-block">
-            <p>6. What information does DHCP assign automatically?</p>
-            <label><input type="radio" name="q6" value="A"> MAC address</label><br>
-            <label><input type="radio" name="q6" value="B"> IP address</label><br>
-            <label><input type="radio" name="q6" value="C"> Boot order</label><br>
-            <label><input type="radio" name="q6" value="D"> Port number</label>
-            <div class="answer-explanation" id="exp6">
-                <div class="explanation-title">Explanation:</div>
-                DHCP (Dynamic Host Configuration Protocol) automatically assigns IP addresses to devices on a network, reducing manual configuration.
-            </div>
-        </div>
-        <div class="question-block">
-            <p>7. Minimum number of hard drives required for RAID 5?</p>
-            <label><input type="radio" name="q7" value="A"> 2</label><br>
-            <label><input type="radio" name="q7" value="B"> 3</label><br>
-            <label><input type="radio" name="q7" value="C"> 4</label><br>
-            <label><input type="radio" name="q7" value="D"> 5</label>
-            <div class="answer-explanation" id="exp7">
-                <div class="explanation-title">Explanation:</div>
-                RAID 5 requires a minimum of 3 hard drives to stripe data with parity across multiple drives for fault tolerance.
-            </div>
-        </div>
-        <div class="question-block">
-            <p>8. Why do technicians use port scanning?</p>
-            <label><input type="radio" name="q8" value="A"> Check open ports for security audit</label><br>
-            <label><input type="radio" name="q8" value="B"> Clean hard disk dust</label><br>
-            <label><input type="radio" name="q8" value="C"> Adjust monitor brightness</label><br>
-            <label><input type="radio" name="q8" value="D"> Set static IP</label>
-            <div class="answer-explanation" id="exp8">
-                <div class="explanation-title">Explanation:</div>
-                Port scanning is used to identify open ports on a system for security auditing and checking for potential vulnerabilities.
-            </div>
-        </div>
-        <div class="question-block">
-            <p>9. UTP cable stands for?</p>
-            <label><input type="radio" name="q9" value="A"> Unshielded Twisted Pair</label><br>
-            <label><input type="radio" name="q9" value="B"> Universal Transfer Protocol</label><br>
-            <label><input type="radio" name="q9" value="C"> Unified Twisted Port</label><br>
-            <label><input type="radio" name="q9" value="D"> Usable Transmission Pair</label>
-            <div class="answer-explanation" id="exp9">
-                <div class="explanation-title">Explanation:</div>
-                UTP (Unshielded Twisted Pair) is a common networking cable type used in Ethernet connections without additional shielding.
-            </div>
-        </div>
-        <div class="question-block">
-            <p>10. What can protect computer against power surges?</p>
-            <label><input type="radio" name="q10" value="A"> Anti-static bag</label><br>
-            <label><input type="radio" name="q10" value="B"> Surge protector</label><br>
-            <label><input type="radio" name="q10" value="C"> CMOS battery</label><br>
-            <label><input type="radio" name="q10" value="D"> USB hub</label>
-            <div class="answer-explanation" id="exp10">
-                <div class="explanation-title">Explanation:</div>
-                A surge protector detects and stops sudden voltage spikes from reaching your computer, protecting against power surges.
-            </div>
-        </div>
-
-        <button class="submit-all" onclick="submitQuiz()">Submit All Answers</button>
-        <button class="show-answers-btn" id="showAnswersBtn" onclick="toggleAnswers()">Show Correct Answers</button>
-        <button class="retry-btn" id="retryBtn" onclick="retryQuiz()">Retry Quiz</button>
-        
-        <div class="result" id="resultArea"></div>
+    <!-- Quiz Selector -->
+    <div class="quiz-selector">
+        <h2>Select a Quiz Topic</h2>
+        <button class="quiz-button quiz-button-active" onclick="selectQuiz('networking')">
+            📡 Networking Technology
+        </button>
+        <button class="quiz-button quiz-button-inactive" onclick="selectQuiz('maintenance')">
+            🔧 Computer Maintenance
+        </button>
     </div>
+
+    <!-- NETWORKING TECHNOLOGY QUIZ -->
+    <div id="networking" class="quiz-content active">
+        <h2>Networking Technology Quiz</h2>
+        <div id="quizContainerNetworking">
+            <div class="question-block">
+                <p>1. Which layer does a switch operate on?</p>
+                <label><input type="radio" name="net_q1" value="A"> Layer 1</label><br>
+                <label><input type="radio" name="net_q1" value="B"> Layer 2</label><br>
+                <label><input type="radio" name="net_q1" value="C"> Layer 3</label><br>
+                <label><input type="radio" name="net_q1" value="D"> Layer 4</label>
+                <div class="answer-explanation" id="net_exp1">
+                    <div class="explanation-title">Explanation:</div>
+                    Switches operate at Layer 2 (Data Link Layer) of the OSI model. They use MAC addresses to forward frames within a local area network.
+                </div>
+            </div>
+            <div class="question-block">
+                <p>2. What is the main function of a router?</p>
+                <label><input type="radio" name="net_q2" value="A"> Forward frames inside LAN</label><br>
+                <label><input type="radio" name="net_q2" value="B"> Connect different networks</label><br>
+                <label><input type="radio" name="net_q2" value="C"> Prevent ESD damage</label><br>
+                <label><input type="radio" name="net_q2" value="D"> Manage display output</label>
+                <div class="answer-explanation" id="net_exp2">
+                    <div class="explanation-title">Explanation:</div>
+                    Routers connect different networks together using IP addresses at Layer 3 (Network Layer). They determine the best path for data to travel between networks.
+                </div>
+            </div>
+            <div class="question-block">
+                <p>3. Which RAID level provides mirroring?</p>
+                <label><input type="radio" name="net_q3" value="A"> RAID 0</label><br>
+                <label><input type="radio" name="net_q3" value="B"> RAID 1</label><br>
+                <label><input type="radio" name="net_q3" value="C"> RAID 5</label><br>
+                <label><input type="radio" name="net_q3" value="D"> RAID 10</label>
+                <div class="answer-explanation" id="net_exp3">
+                    <div class="explanation-title">Explanation:</div>
+                    RAID 1 provides data mirroring, which means data is duplicated on two drives for redundancy and protection against single drive failure.
+                </div>
+            </div>
+            <div class="question-block">
+                <p>4. Minimum number of hard drives required for RAID 5?</p>
+                <label><input type="radio" name="net_q4" value="A"> 2</label><br>
+                <label><input type="radio" name="net_q4" value="B"> 3</label><br>
+                <label><input type="radio" name="net_q4" value="C"> 4</label><br>
+                <label><input type="radio" name="net_q4" value="D"> 5</label>
+                <div class="answer-explanation" id="net_exp4">
+                    <div class="explanation-title">Explanation:</div>
+                    RAID 5 requires a minimum of 3 hard drives to stripe data with parity across multiple drives for fault tolerance.
+                </div>
+            </div>
+            <div class="question-block">
+                <p>5. What information does DHCP assign automatically?</p>
+                <label><input type="radio" name="net_q5" value="A"> MAC address</label><br>
+                <label><input type="radio" name="net_q5" value="B"> IP address</label><br>
+                <label><input type="radio" name="net_q5" value="C"> Boot order</label><br>
+                <label><input type="radio" name="net_q5" value="D"> Port number</label>
+                <div class="answer-explanation" id="net_exp5">
+                    <div class="explanation-title">Explanation:</div>
+                    DHCP (Dynamic Host Configuration Protocol) automatically assigns IP addresses to devices on a network, reducing manual configuration.
+                </div>
+            </div>
+            <div class="question-block">
+                <p>6. How do you enter privileged EXEC mode on a Cisco device in Packet Tracer?</p>
+                <label><input type="radio" name="net_q6" value="A"> enable</label><br>
+                <label><input type="radio" name="net_q6" value="B"> configure terminal</label><br>
+                <label><input type="radio" name="net_q6" value="C"> privileged mode</label><br>
+                <label><input type="radio" name="net_q6" value="D"> access enable</label>
+                <div class="answer-explanation" id="net_exp6">
+                    <div class="explanation-title">Explanation:</div>
+                    To enter privileged EXEC mode on a Cisco device, use the 'enable' command. This gives you access to more powerful configuration options. Once in privileged mode, you can use 'configure terminal' to enter global configuration mode.
+                </div>
+            </div>
+            <div class="question-block">
+                <p>7. What is subnetting used for in networking?</p>
+                <label><input type="radio" name="net_q7" value="A"> Dividing a large network into smaller sub-networks</label><br>
+                <label><input type="radio" name="net_q7" value="B"> Increasing data transfer speed</label><br>
+                <label><input type="radio" name="net_q7" value="C"> Reducing power consumption</label><br>
+                <label><input type="radio" name="net_q7" value="D"> Encrypting network traffic</label>
+                <div class="answer-explanation" id="net_exp7">
+                    <div class="explanation-title">Explanation:</div>
+                    Subnetting divides a large IP network into smaller, manageable sub-networks. This improves network efficiency, reduces broadcast traffic, and enhances security by logically separating network segments.
+                </div>
+            </div>
+            <div class="question-block">
+                <p>8. For a Class C network (192.168.1.0/24), what is the subnet mask?</p>
+                <label><input type="radio" name="net_q8" value="A"> 255.255.0.0</label><br>
+                <label><input type="radio" name="net_q8" value="B"> 255.255.255.0</label><br>
+                <label><input type="radio" name="net_q8" value="C"> 255.0.0.0</label><br>
+                <label><input type="radio" name="net_q8" value="D"> 255.255.255.255</label>
+                <div class="answer-explanation" id="net_exp8">
+                    <div class="explanation-title">Explanation:</div>
+                    A Class C network with /24 CIDR notation means the first 24 bits are the network portion and the remaining 8 bits are for hosts. The subnet mask is 255.255.255.0, which provides 254 usable host addresses (0 and 255 are reserved).
+                </div>
+            </div>
+            <div class="question-block">
+                <p>9. Which command disables DNS lookup on a Cisco router?</p>
+                <label><input type="radio" name="net_q9" value="A"> disable dns</label><br>
+                <label><input type="radio" name="net_q9" value="B"> no ip domain-lookup</label><br>
+                <label><input type="radio" name="net_q9" value="C"> dns disable</label><br>
+                <label><input type="radio" name="net_q9" value="D"> ip lookup disable</label>
+                <div class="answer-explanation" id="net_exp9">
+                    <div class="explanation-title">Explanation:</div>
+                    In Cisco IOS, the command 'no ip domain-lookup' disables DNS lookup on the router. This is useful during configuration to prevent the router from attempting to resolve unrecognized commands as hostnames, which can cause delays.
+                </div>
+            </div>
+            <div class="question-block">
+                <p>10. UTP cable stands for?</p>
+                <label><input type="radio" name="net_q10" value="A"> Unshielded Twisted Pair</label><br>
+                <label><input type="radio" name="net_q10" value="B"> Universal Transfer Protocol</label><br>
+                <label><input type="radio" name="net_q10" value="C"> Unified Twisted Port</label><br>
+                <label><input type="radio" name="net_q10" value="D"> Usable Transmission Pair</label>
+                <div class="answer-explanation" id="net_exp10">
+                    <div class="explanation-title">Explanation:</div>
+                    UTP (Unshielded Twisted Pair) is a common networking cable type used in Ethernet connections without additional shielding. It's widely used in office and home networks due to its cost-effectiveness.
+                </div>
+            </div>
+
+            <button class="submit-all" onclick="submitQuiz('networking')">Submit All Answers</button>
+            <button class="show-answers-btn" id="showAnswersBtnNetworking" onclick="toggleAnswers('networking')">Show Correct Answers</button>
+            <button class="retry-btn" id="retryBtnNetworking" onclick="retryQuiz('networking')">Retry Quiz</button>
+            
+            <div class="result" id="resultAreaNetworking"></div>
+        </div>
+    </div>
+
+    <!-- COMPUTER MAINTENANCE QUIZ -->
+    <div id="maintenance" class="quiz-content">
+        <h2>Computer Maintenance Quiz</h2>
+        <div id="quizContainerMaintenance">
+            <div class="question-block">
+                <p>1. What does CMOS battery store?</p>
+                <label><input type="radio" name="maint_q1" value="A"> Operating system files</label><br>
+                <label><input type="radio" name="maint_q1" value="B"> BIOS configuration and system time</label><br>
+                <label><input type="radio" name="maint_q1" value="C"> User documents</label><br>
+                <label><input type="radio" name="maint_q1" value="D"> Network IP addresses</label>
+                <div class="answer-explanation" id="maint_exp1">
+                    <div class="explanation-title">Explanation:</div>
+                    The CMOS battery powers the BIOS configuration and maintains system time even when the computer is powered off. When the CMOS battery dies, you may see errors during boot or incorrect system time.
+                </div>
+            </div>
+            <div class="question-block">
+                <p>2. What tool protects hardware from ESD (Electrostatic Discharge)?</p>
+                <label><input type="radio" name="maint_q2" value="A"> Surge protector</label><br>
+                <label><input type="radio" name="maint_q2" value="B"> Anti-static wrist strap</label><br>
+                <label><input type="radio" name="maint_q2" value="C"> Compressed air</label><br>
+                <label><input type="radio" name="maint_q2" value="D"> UPS</label>
+                <div class="answer-explanation" id="maint_exp2">
+                    <div class="explanation-title">Explanation:</div>
+                    An anti-static wrist strap safely grounds you to prevent Electrostatic Discharge (ESD), which can damage sensitive computer components like RAM, motherboards, and graphics cards. It's essential when working inside a computer case.
+                </div>
+            </div>
+            <div class="question-block">
+                <p>3. What can protect a computer against power surges?</p>
+                <label><input type="radio" name="maint_q3" value="A"> Anti-static bag</label><br>
+                <label><input type="radio" name="maint_q3" value="B"> Surge protector</label><br>
+                <label><input type="radio" name="maint_q3" value="C"> CMOS battery</label><br>
+                <label><input type="radio" name="maint_q3" value="D"> USB hub</label>
+                <div class="answer-explanation" id="maint_exp3">
+                    <div class="explanation-title">Explanation:</div>
+                    A surge protector detects and stops sudden voltage spikes from reaching your computer, protecting the power supply and internal components from damage caused by power surges from lightning or electrical faults.
+                </div>
+            </div>
+            <div class="question-block">
+                <p>4. Which of the following is a best practice when upgrading RAM?</p>
+                <label><input type="radio" name="maint_q4" value="A"> Install RAM while the computer is powered on</label><br>
+                <label><input type="radio" name="maint_q4" value="B"> Ground yourself with an anti-static strap before handling RAM</label><br>
+                <label><input type="radio" name="maint_q4" value="C"> Touch the RAM directly without any protection</label><br>
+                <label><input type="radio" name="maint_q4" value="D"> Install only one type of RAM brand in the system</label>
+                <div class="answer-explanation" id="maint_exp4">
+                    <div class="explanation-title">Explanation:</div>
+                    Before upgrading RAM, you should always ground yourself with an anti-static strap to prevent ESD damage. Always power off the computer completely and unplug it before opening the case. Mix RAM brands is acceptable if the speed and type match.
+                </div>
+            </div>
+            <div class="question-block">
+                <p>5. Which of the following display standards is known as 4K?</p>
+                <label><input type="radio" name="maint_q5" value="A"> 1920 x 1080 pixels (Full HD)</label><br>
+                <label><input type="radio" name="maint_q5" value="B"> 3840 x 2160 pixels (Ultra HD)</label><br>
+                <label><input type="radio" name="maint_q5" value="C"> 2560 x 1440 pixels (QHD)</label><br>
+                <label><input type="radio" name="maint_q5" value="D"> 1280 x 720 pixels (HD)</label>
+                <div class="answer-explanation" id="maint_exp5">
+                    <div class="explanation-title">Explanation:</div>
+                    4K resolution, also known as Ultra HD (UHD), is 3840 x 2160 pixels. It provides four times the pixel count of Full HD (1080p), resulting in much sharper and more detailed images. 4K displays are increasingly common in modern monitors, TVs, and laptops.
+                </div>
+            </div>
+            <div class="question-block">
+                <p>6. When disposing of old computer equipment, which is an environmentally responsible approach?</p>
+                <label><input type="radio" name="maint_q6" value="A"> Throw it in the regular trash</label><br>
+                <label><input type="radio" name="maint_q6" value="B"> Donate it to an organization or recycle through certified e-waste programs</label><br>
+                <label><input type="radio" name="maint_q6" value="C"> Bury it in the ground</label><br>
+                <label><input type="radio" name="maint_q6" value="D"> Burn it to reduce volume</label>
+                <div class="answer-explanation" id="maint_exp6">
+                    <div class="explanation-title">Explanation:</div>
+                    Old computer equipment contains hazardous materials like lead, mercury, and cadmium. The most environmentally responsible approach is to donate working equipment to schools or nonprofits, or send it to certified e-waste recycling facilities that properly handle toxic components and recover valuable materials.
+                </div>
+            </div>
+            <div class="question-block">
+                <p>7. What is the first step when upgrading a hard drive?</p>
+                <label><input type="radio" name="maint_q7" value="A"> Immediately install the new hard drive</label><br>
+                <label><input type="radio" name="maint_q7" value="B"> Back up your data and power off the computer</label><br>
+                <label><input type="radio" name="maint_q7" value="C"> Format the old drive first</label><br>
+                <label><input type="radio" name="maint_q7" value="D"> Remove all cables at once</label>
+                <div class="answer-explanation" id="maint_exp7">
+                    <div class="explanation-title">Explanation:</div>
+                    Before any hardware upgrade, especially storage devices, you should always back up your data to prevent loss. Then power off the computer completely, unplug it, and ground yourself before opening the case or handling components.
+                </div>
+            </div>
+            <div class="question-block">
+                <p>8. How often should you clean the interior of a desktop computer to prevent overheating?</p>
+                <label><input type="radio" name="maint_q8" value="A"> Never - it doesn't need cleaning</label><br>
+                <label><input type="radio" name="maint_q8" value="B"> Every 6-12 months, or more frequently if in dusty environments</label><br>
+                <label><input type="radio" name="maint_q8" value="C"> Once every 5 years</label><br>
+                <label><input type="radio" name="maint_q8" value="D"> Only when the computer is making loud fan noise</label>
+                <div class="answer-explanation" id="maint_exp8">
+                    <div class="explanation-title">Explanation:</div>
+                    Dust accumulation inside a computer reduces airflow and causes components to overheat. Regular cleaning every 6-12 months (more frequently in dusty environments) is essential for maintaining optimal performance and preventing hardware failure. Use compressed air to gently blow out dust from fans and heat sinks.
+                </div>
+            </div>
+            <div class="question-block">
+                <p>9. What should be done before replacing the graphics card (GPU)?</p>
+                <label><input type="radio" name="maint_q9" value="A"> Update drivers after installation</label><br>
+                <label><input type="radio" name="maint_q9" value="B"> Ensure adequate power supply, uninstall old drivers, shut down and power off the computer</label><br>
+                <label><input type="radio" name="maint_q9" value="C"> Keep the old drivers installed</label><br>
+                <label><input type="radio" name="maint_q9" value="D"> Run the computer at full load first</label>
+                <div class="answer-explanation" id="maint_exp9">
+                    <div class="explanation-title">Explanation:</div>
+                    Before replacing a GPU, check that your power supply has enough wattage for the new card. Uninstall old GPU drivers in safe mode to prevent conflicts. Always power off and unplug the computer before opening the case. After installation, install new drivers for proper functionality.
+                </div>
+            </div>
+            <div class="question-block">
+                <p>10. What are the environmental concerns with improper computer disposal?</p>
+                <label><input type="radio" name="maint_q10" value="A"> It takes up too much landfill space</label><br>
+                <label><input type="radio" name="maint_q10" value="B"> Hazardous materials like lead and mercury contaminate soil and groundwater</label><br>
+                <label><input type="radio" name="maint_q10" value="C"> It wastes electricity</label><br>
+                <label><input type="radio" name="maint_q10" value="D"> It causes climate change</label>
+                <div class="answer-explanation" id="maint_exp10">
+                    <div class="explanation-title">Explanation:</div>
+                    Computers contain toxic substances including lead (in solder), mercury (in displays), and cadmium (in batteries). When disposed of improperly in landfills, these materials leach into soil and groundwater, causing environmental and health hazards. E-waste recycling programs properly extract and handle these hazardous materials.
+                </div>
+            </div>
+
+            <button class="submit-all" onclick="submitQuiz('maintenance')">Submit All Answers</button>
+            <button class="show-answers-btn" id="showAnswersBtnMaintenance" onclick="toggleAnswers('maintenance')">Show Correct Answers</button>
+            <button class="retry-btn" id="retryBtnMaintenance" onclick="retryQuiz('maintenance')">Retry Quiz</button>
+            
+            <div class="result" id="resultAreaMaintenance"></div>
+        </div>
+    </div>
+
 </div>
 
 <script>
-// ===== BEGINNER-FRIENDLY QUIZ SCRIPT =====
-// This script is written to be easy to understand and modify
+// ===== DUAL QUIZ SYSTEM SCRIPT =====
+// This script handles both Networking Technology and Computer Maintenance quizzes
 
-// Step 1: Define the correct answers in a dictionary/object
-// Think of it like a key that unlocks the correct answers
-const answerKey = {
-    q1: "B",   // Switch operates on Layer 2
-    q2: "B",   // Router connects different networks
-    q3: "B",   // CMOS stores BIOS and system time
-    q4: "B",   // RAID 1 provides mirroring
-    q5: "B",   // Anti-static wrist strap protects from ESD
-    q6: "B",   // DHCP assigns IP address
-    q7: "B",   // RAID 5 needs minimum 3 drives
-    q8: "A",   // Port scanning checks for open ports
-    q9: "A",   // UTP = Unshielded Twisted Pair
-    q10: "B"   // Surge protector protects against power surges
+// Define correct answers for both quizzes
+const answerKeyNetworking = {
+    net_q1: "B",   // Switch operates on Layer 2
+    net_q2: "B",   // Router connects different networks
+    net_q3: "B",   // RAID 1 provides mirroring
+    net_q4: "B",   // RAID 5 needs minimum 3 drives
+    net_q5: "B",   // DHCP assigns IP address
+    net_q6: "A",   // Enable command for privileged mode
+    net_q7: "A",   // Subnetting divides large networks
+    net_q8: "B",   // Class C subnet mask
+    net_q9: "B",   // no ip domain-lookup disables DNS lookup
+    net_q10: "A"   // UTP = Unshielded Twisted Pair
 };
 
-// Step 2: Create a variable to track if quiz has been submitted
-let quizSubmitted = false;
+const answerKeyMaintenance = {
+    maint_q1: "B",  // CMOS stores BIOS and system time
+    maint_q2: "B",  // Anti-static wrist strap protects from ESD
+    maint_q3: "B",  // Surge protector protects against power surges
+    maint_q4: "B",  // Ground yourself with anti-static strap
+    maint_q5: "B",  // 4K = 3840 x 2160 pixels
+    maint_q6: "B",  // Recycle through certified e-waste programs
+    maint_q7: "B",  // Back up data and power off first
+    maint_q8: "B",  // Clean every 6-12 months
+    maint_q9: "B",  // Ensure power supply, uninstall drivers, power off
+    maint_q10: "B"  // Hazardous materials contaminate soil/groundwater
+};
 
-// Step 3: Create a variable to track if answers are shown
-let answersShown = false;
+// Track state for each quiz
+let quizState = {
+    networking: {
+        submitted: false,
+        answersShown: false
+    },
+    maintenance: {
+        submitted: false,
+        answersShown: false
+    },
+    currentQuiz: 'networking'
+};
 
-// Step 4: Function to check answers and calculate score
-// This function runs when user clicks "Submit All Answers"
-function submitQuiz() {
-    // Initialize score counter to 0
-    let score = 0;
+// Function to select quiz
+function selectQuiz(quizName) {
+    // Hide all quiz contents
+    document.getElementById('networking').classList.remove('active');
+    document.getElementById('maintenance').classList.remove('active');
     
-    // Count total number of questions
+    // Show selected quiz
+    document.getElementById(quizName).classList.add('active');
+    
+    // Update button states
+    document.querySelectorAll('.quiz-button').forEach(btn => {
+        btn.classList.remove('quiz-button-active');
+        btn.classList.add('quiz-button-inactive');
+    });
+    
+    event.target.classList.remove('quiz-button-inactive');
+    event.target.classList.add('quiz-button-active');
+    
+    // Update current quiz
+    quizState.currentQuiz = quizName;
+    
+    // Scroll to top
+    window.scrollTo(0, 0);
+}
+
+// Function to submit quiz answers
+function submitQuiz(quizType) {
+    const answerKey = quizType === 'networking' ? answerKeyNetworking : answerKeyMaintenance;
+    const prefix = quizType === 'networking' ? 'net_q' : 'maint_q';
+    const resultAreaId = quizType === 'networking' ? 'resultAreaNetworking' : 'resultAreaMaintenance';
+    const retryBtnId = quizType === 'networking' ? 'retryBtnNetworking' : 'retryBtnMaintenance';
+    const showAnswersBtnId = quizType === 'networking' ? 'showAnswersBtnNetworking' : 'showAnswersBtnMaintenance';
+    
+    let score = 0;
     let total = Object.keys(answerKey).length;
     
-    // Loop through each question in answerKey
+    // Loop through each question
     for (let questionName in answerKey) {
-        // Get the user's selected answer for this question
         let userSelectedAnswer = document.querySelector(`input[name="${questionName}"]:checked`);
         
-        // Check if user selected an answer AND if it matches the correct answer
         if (userSelectedAnswer && userSelectedAnswer.value === answerKey[questionName]) {
-            score++;  // Add 1 to score for correct answer
+            score++;
         }
     }
     
-    // Calculate the percentage score
+    // Calculate percentage
     let percentage = Math.round((score / total) * 100);
-    
-    // Determine if the score is passing or not
     let scoreStatus = percentage >= 70 ? "PASS ✓" : "FAIL ✗";
     let scoreColor = percentage >= 70 ? "correct" : "wrong";
     
-    // Display the result to the user
-    document.getElementById("resultArea").innerHTML = `
+    // Display result
+    document.getElementById(resultAreaId).innerHTML = `
         <p class="${scoreColor}">Your Score: ${score} / ${total} (${percentage}%)</p>
         <p class="${scoreColor}">Status: ${scoreStatus}</p>
     `;
     
-    // Show the retry and show answers buttons
-    document.getElementById("retryBtn").style.display = "inline-block";
-    document.getElementById("showAnswersBtn").style.display = "inline-block";
+    // Show buttons
+    document.getElementById(retryBtnId).style.display = "inline-block";
+    document.getElementById(showAnswersBtnId).style.display = "inline-block";
     
-    // Mark quiz as submitted so we can show answers
-    quizSubmitted = true;
+    // Mark quiz as submitted
+    quizState[quizType].submitted = true;
 }
 
-// Step 5: Function to toggle (show/hide) correct answers and explanations
-function toggleAnswers() {
-    // Check if quiz has been submitted first
-    if (!quizSubmitted) {
+// Function to toggle answers
+function toggleAnswers(quizType) {
+    if (!quizState[quizType].submitted) {
         alert("Please submit your answers first!");
         return;
     }
     
-    // Toggle the answersShown state
-    answersShown = !answersShown;
+    quizState[quizType].answersShown = !quizState[quizType].answersShown;
     
-    // Get all explanation elements
-    let explanations = document.querySelectorAll(".answer-explanation");
+    const prefix = quizType === 'networking' ? 'net_q' : 'maint_q';
+    const answerKey = quizType === 'networking' ? answerKeyNetworking : answerKeyMaintenance;
+    const buttonId = quizType === 'networking' ? 'showAnswersBtnNetworking' : 'showAnswersBtnMaintenance';
     
-    // Loop through each explanation and toggle its display
+    // Get all explanation elements for this quiz
+    const quizContainer = quizType === 'networking' ? document.getElementById('quizContainerNetworking') : document.getElementById('quizContainerMaintenance');
+    let explanations = quizContainer.querySelectorAll(".answer-explanation");
+    
+    // Toggle explanations
     explanations.forEach(function(explanation) {
-        // If showing answers, display the explanation
-        if (answersShown) {
+        if (quizState[quizType].answersShown) {
             explanation.style.display = "block";
         } else {
             explanation.style.display = "none";
         }
     });
     
-    // Now highlight or unhighlight the correct answers
-    // Loop through all questions
+    // Highlight correct answers
     for (let questionName in answerKey) {
-        // Get all radio buttons for this question
-        let radioButtons = document.querySelectorAll(`input[name="${questionName}"]`);
+        let radioButtons = quizContainer.querySelectorAll(`input[name="${questionName}"]`);
         let correctAnswer = answerKey[questionName];
         
-        // Loop through each radio button
         radioButtons.forEach(function(radio) {
-            // Get the label that contains this radio button
             let label = radio.parentElement;
             
-            // Check if this is the correct answer
             if (radio.value === correctAnswer) {
-                // If showing answers, highlight this radio button with green
-                if (answersShown) {
+                if (quizState[quizType].answersShown) {
                     radio.classList.add("correct-answer-highlight");
                     label.classList.add("correct-answer-label");
                 } else {
-                    // If hiding answers, remove the highlighting
                     radio.classList.remove("correct-answer-highlight");
                     label.classList.remove("correct-answer-label");
                 }
@@ -387,8 +603,8 @@ function toggleAnswers() {
         });
     }
     
-    // Change button text based on whether answers are shown
-    let button = document.getElementById("showAnswersBtn");
+    // Update button text
+    let button = document.getElementById(buttonId);
     if (button.textContent === "Show Correct Answers") {
         button.textContent = "Hide Correct Answers";
     } else {
@@ -396,43 +612,46 @@ function toggleAnswers() {
     }
 }
 
-// Step 6: Function to reset the quiz for retry
-// This allows students to take the quiz again
-function retryQuiz() {
-    // Uncheck all radio buttons (clear all answers)
-    let allRadioButtons = document.querySelectorAll('input[type="radio"]');
+// Function to retry quiz
+function retryQuiz(quizType) {
+    const prefix = quizType === 'networking' ? 'net_q' : 'maint_q';
+    const resultAreaId = quizType === 'networking' ? 'resultAreaNetworking' : 'resultAreaMaintenance';
+    const retryBtnId = quizType === 'networking' ? 'retryBtnNetworking' : 'retryBtnMaintenance';
+    const showAnswersBtnId = quizType === 'networking' ? 'showAnswersBtnNetworking' : 'showAnswersBtnMaintenance';
+    const quizContainer = quizType === 'networking' ? document.getElementById('quizContainerNetworking') : document.getElementById('quizContainerMaintenance');
+    
+    // Uncheck all radio buttons
+    let allRadioButtons = quizContainer.querySelectorAll('input[type="radio"]');
     allRadioButtons.forEach(function(radio) {
         radio.checked = false;
         radio.classList.remove("correct-answer-highlight");
     });
     
-    // Remove highlighting from all labels
-    let allLabels = document.querySelectorAll("label");
+    // Remove label highlighting
+    let allLabels = quizContainer.querySelectorAll("label");
     allLabels.forEach(function(label) {
         label.classList.remove("correct-answer-label");
     });
     
-    // Clear the result display
-    document.getElementById("resultArea").innerHTML = "";
+    // Clear results
+    document.getElementById(resultAreaId).innerHTML = "";
     
-    // Hide the retry and show answers buttons
-    document.getElementById("retryBtn").style.display = "none";
-    document.getElementById("showAnswersBtn").style.display = "none";
-    document.getElementById("showAnswersBtn").textContent = "Show Correct Answers";
+    // Hide buttons
+    document.getElementById(retryBtnId).style.display = "none";
+    document.getElementById(showAnswersBtnId).style.display = "none";
+    document.getElementById(showAnswersBtnId).textContent = "Show Correct Answers";
     
-    // Hide all explanations
-    let explanations = document.querySelectorAll(".answer-explanation");
+    // Hide explanations
+    let explanations = quizContainer.querySelectorAll(".answer-explanation");
     explanations.forEach(function(explanation) {
         explanation.style.display = "none";
     });
     
-    // Reset the submitted flag
-    quizSubmitted = false;
+    // Reset state
+    quizState[quizType].submitted = false;
+    quizState[quizType].answersShown = false;
     
-    // Reset the answers shown flag
-    answersShown = false;
-    
-    // Scroll to top so user can start fresh
+    // Scroll to top
     window.scrollTo(0, 0);
 }
 </script>
