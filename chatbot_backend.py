@@ -539,6 +539,7 @@ def health_check():
 
 
 if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
     print("🚀 Network Learning Chatbot Backend Starting...")
     print("Available endpoints:")
     print("  POST /api/chat - Send chat message")
@@ -551,4 +552,4 @@ if __name__ == '__main__':
     for category in KNOWLEDGE_BASE.keys():
         print(f"  - {category.replace('_', ' ').title()}")
     
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=port, host='0.0.0.0')

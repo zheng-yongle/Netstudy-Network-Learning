@@ -147,8 +147,10 @@ const inputBox = document.getElementById('question');
 const sendBtn = document.getElementById('sendBtn');
 const connectionStatus = document.getElementById('connectionStatus');
 
-// Backend API URL
-const BACKEND_URL = 'http://localhost:5000';
+// Backend API URL - UPDATE THIS WITH YOUR DEPLOYED BACKEND URL
+// For local development: 'http://localhost:5000'
+// For production: 'https://your-deployed-url.onrender.com'
+const BACKEND_URL = 'https://netstudy-chatbot-backend.onrender.com';
 
 // Check if backend is available
 async function checkBackendConnection() {
@@ -163,7 +165,7 @@ async function checkBackendConnection() {
         console.log('Backend not available:', error);
     }
     
-    connectionStatus.textContent = '⚠️ Backend not connected - using fallback mode';
+    connectionStatus.textContent = '⚠️ Backend connecting...';
     connectionStatus.className = 'connection-status disconnected';
     return false;
 }
