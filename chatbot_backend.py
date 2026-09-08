@@ -8,9 +8,100 @@ from flask_cors import CORS
 import os
 from datetime import datetime
 import json
+import re
+import ipaddress
+import math
 
 app = Flask(__name__)
 CORS(app)
+
+# ==================== SUBNETTING CALCULATOR ====================
+
+class SubnettingCalculator:
+    """Calculates subnet information for given network and requirements"""
+    
+    @staticmethod
+    def parse_subnet_request(query):
+        """Parse natural language subnet request"""
+        # Pattern: "with X.X.X.X, give me the addressing plan for Y subnets and Z hosts per subnet"
+        ip_pattern = r'\d+\.\d+\.\d+\.\d+'
+        subnets_pattern = r'(\d+)\s+subnet'
+        hosts_pattern = r'(\d+)\s+host'
+        
+        ip_match = re.search(ip_pattern, query)
+        subnets_match = re.search(subnets_pattern, query, re.IGNORECASE)
+        hosts_match = re.search(hosts_pattern, query, re.IGNORECASE)
+        
+        if ip_match and subnets_match and hosts_match:
+            return {
+                'network': ip_match.group(),
+                'num_subnets': int(subnets_match.group(1)),
+                'hosts_per_subnet': int(hosts_match.group(1))
+            }
+        return None
+    
+    @staticmethod
+    def calculate_addressing_plan(network_str, num_subnets, hosts_per_subnet):
+        """Calculate complete addressing plan for subnets"""
+        try:
+            # Parse the network address
+            network = ipaddress.IPv4Network(network_str, strict=False)
+            
+            # Calculate bits needed for hosts
+            host_bits_needed = math.ceil(math.log2(hosts_per_subnet + 2))  # +2 for network and broadcast
+            
+            # Calculate bits needed for subnets
+            subnet_bits_needed = math.ceil(math.log2(num_subnets))
+            
+            # Calculate new prefix length
+            original_prefix = network.prefixlen
+            new_prefix = original_prefix + subnet_bits_needed
+            
+            if new_prefix > 32 - host_bits_needed:
+                return {
+                    'error': f"Cannot create {num_subnets} subnets with {hosts_per_subnet} hosts each in {network_str}"
+                }
+            
+            # Generate subnets
+            subnets = list(network.subnets(new_prefix=new_prefix))
+            
+            if len(subnets) < num_subnets:
+                subnets = subnets[:num_subnets]
+            else:
+                subnets = subnets[:num_subnets]
+            
+            # Build addressing plan
+            addressing_plan = []
+            for idx, subnet in enumerate(subnets):
+                subnet_info = {
+                    'subnet_number': idx + 1,
+                    'network_address': str(subnet.network_address),
+                    'subnet_mask': str(subnet.netmask),
+                    'cidr_notation': str(subnet),
+                    'broadcast_address': str(subnet.broadcast_address),
+                    'first_usable_ip': str(list(subnet.hosts())[0]) if len(list(subnet.hosts())) > 0 else "N/A",
+                    'last_usable_ip': str(list(subnet.hosts())[-1]) if len(list(subnet.hosts())) > 0 else "N/A",
+                    'total_usable_hosts': len(list(subnet.hosts()))
+                }
+                addressing_plan.append(subnet_info)
+            
+            return {
+                'success': True,
+                'original_network': str(network),
+                'calculation_summary': {
+                    'host_bits_needed': host_bits_needed,
+                    'subnet_bits_needed': subnet_bits_needed,
+                    'original_prefix': original_prefix,
+                    'new_prefix': new_prefix,
+                    'total_subnets_available': len(subnets)
+                },
+                'addressing_plan': addressing_plan
+            }
+        
+        except Exception as e:
+            return {
+                'error': f"Error calculating subnets: {str(e)}"
+            }
 
 # ==================== KNOWLEDGE BASE ====================
 # Comprehensive networking and computer maintenance knowledge base
@@ -301,6 +392,7 @@ class ChatbotResponse:
     def __init__(self):
         self.conversation_history = []
         self.user_skill_level = "beginner"
+        self.calculator = SubnettingCalculator()
     
     def find_relevant_topics(self, query):
         """Find relevant topics from knowledge base"""
@@ -317,6 +409,21 @@ class ChatbotResponse:
     
     def generate_response(self, user_query):
         """Generate an educational response based on user query"""
+        # Check for subnetting calculation request
+        if "subnet" in user_query.lower() and any(word in user_query.lower() for word in ["host", "subnets", "addressing"]):
+            subnet_request = self.calculator.parse_subnet_request(user_query)
+            if subnet_request:
+                result = self.calculator.calculate_addressing_plan(
+                    subnet_request['network'],
+                    subnet_request['num_subnets'],
+                    subnet_request['hosts_per_subnet']
+                )
+                if 'success' in result:
+                    return self.format_subnet_response(result)
+                else:
+                    return f"❌ {result['error']}"
+        
+        # Default knowledge base lookup
         relevant_topics = self.find_relevant_topics(user_query)
         
         if not relevant_topics:
@@ -339,6 +446,31 @@ class ChatbotResponse:
         
         if any("study_tip" in str(v).lower() for v in category_data["content"].values()):
             response += "\n💡 **Study Tip:** Review the flashcards and practice problems related to this topic!\n"
+        
+        return response
+    
+    def format_subnet_response(self, result):
+        """Format subnet calculation response"""
+        response = f"**📊 Subnetting Calculation Results**\n\n"
+        response += f"**Original Network:** {result['original_network']}\n\n"
+        
+        summary = result['calculation_summary']
+        response += f"**Calculation Summary:**\n"
+        response += f"  - Host bits needed: {summary['host_bits_needed']}\n"
+        response += f"  - Subnet bits needed: {summary['subnet_bits_needed']}\n"
+        response += f"  - Original prefix: /{summary['original_prefix']}\n"
+        response += f"  - New prefix: /{summary['new_prefix']}\n"
+        response += f"  - Total subnets available: {summary['total_subnets_available']}\n\n"
+        
+        response += f"**Detailed Addressing Plan:**\n"
+        for subnet in result['addressing_plan']:
+            response += f"\n**Subnet {subnet['subnet_number']}** ({subnet['cidr_notation']})\n"
+            response += f"  - Network Address: {subnet['network_address']}\n"
+            response += f"  - Subnet Mask: {subnet['subnet_mask']}\n"
+            response += f"  - First Usable IP: {subnet['first_usable_ip']}\n"
+            response += f"  - Last Usable IP: {subnet['last_usable_ip']}\n"
+            response += f"  - Broadcast Address: {subnet['broadcast_address']}\n"
+            response += f"  - Total Usable Hosts: {subnet['total_usable_hosts']}\n"
         
         return response
     
