@@ -35,28 +35,47 @@
             margin:30px auto;
             padding:0 20px;
         }
+        .connection-status{
+            padding:10px;
+            margin-bottom:15px;
+            border-radius:4px;
+            font-weight:bold;
+            text-align:center;
+        }
+        .connection-status.connected{
+            background:#d4edda;
+            color:#155724;
+        }
+        .connection-status.disconnected{
+            background:#f8d7da;
+            color:#721c24;
+        }
         .chat-box{
             border:1px solid #cccccc;
             min-height:350px;
             padding:15px;
             overflow-y:auto;
             margin-bottom:20px;
+            background-color:#fafafa;
         }
         .msg-bot{
             background:#e9ecef;
-            padding:8px 12px;
+            padding:10px 12px;
             border-radius:6px;
             max-width:70%;
-            margin:6px 0;
+            margin:8px 0;
+            word-wrap:break-word;
+            white-space:pre-wrap;
         }
         .msg-user{
             background:#206bc4;
             color:white;
-            padding:8px 12px;
+            padding:10px 12px;
             border-radius:6px;
             max-width:70%;
-            margin:6px 0 6px auto;
+            margin:8px 0 8px auto;
             text-align:right;
+            word-wrap:break-word;
         }
         .input-area{
             display:flex;
@@ -66,6 +85,8 @@
             flex:1;
             padding:10px;
             font-size:16px;
+            border:1px solid #ccc;
+            border-radius:4px;
         }
         #sendBtn{
             padding:10px 22px;
@@ -74,26 +95,45 @@
             border:none;
             border-radius:4px;
             cursor:pointer;
+            font-weight:bold;
+        }
+        #sendBtn:hover{
+            background:#1a4fa0;
+        }
+        #sendBtn:disabled{
+            background:#cccccc;
+            cursor:not-allowed;
+        }
+        .loading{
+            display:inline-block;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
 <header>
     <h1>Network AI Chatbot</h1>
-    <p>Ask questions about computer networking</p >
+    <p>Ask questions about computer networking</p>
 </header>
 <nav>
-    <a href=" ">Home</a >
-    <a href="#">Virtual Port Simulator</a >
-    <a href="#">Subnet Calculator</a >
-    <a href="#">Network AI Chatbot</a >
-    <a href="#">Lab Quiz</a >
-    <a href="#">Login / Register</a >
+    <a href="index.html">Home</a>
+    <a href="port-sim.html">Virtual Port Simulator</a>
+    <a href="calculator.html">Subnet Calculator</a>
+    <a href="chatbot.html">Network AI Chatbot</a>
+    <a href="lab-quiz.html">Lab Quiz</a>
+    <a href="login.html">Login / Register</a>
 </nav>
 
 <div class="container">
+    <div class="connection-status disconnected" id="connectionStatus">
+        ⚠️ Connecting to backend...
+    </div>
     <div class="chat-box" id="chatWindow">
-        <div class="msg-bot">Hello! You can ask me questions about networking hardware, subnetting, RAID, BIOS, network devices and more.</div>
+        <div class="msg-bot">Hello! I'm your networking assistant powered by the Flask backend. You can ask me questions about networking fundamentals, subnetting, network devices, RAID, security, and more!</div>
     </div>
     <div class="input-area">
         <input type="text" id="question" placeholder="Type your networking question here...">
@@ -105,9 +145,31 @@
 const chatWindow = document.getElementById('chatWindow');
 const inputBox = document.getElementById('question');
 const sendBtn = document.getElementById('sendBtn');
+const connectionStatus = document.getElementById('connectionStatus');
 
-//知识库：关键词匹配 + 标准答案
-const knowledgeBase = [
+// Backend API URL
+const BACKEND_URL = 'http://localhost:5000';
+
+// Check if backend is available
+async function checkBackendConnection() {
+    try {
+        const response = await fetch(`${BACKEND_URL}/health`);
+        if (response.ok) {
+            connectionStatus.textContent = '✓ Connected to backend';
+            connectionStatus.className = 'connection-status connected';
+            return true;
+        }
+    } catch (error) {
+        console.log('Backend not available:', error);
+    }
+    
+    connectionStatus.textContent = '⚠️ Backend not connected - using fallback mode';
+    connectionStatus.className = 'connection-status disconnected';
+    return false;
+}
+
+// Fallback knowledge base for when backend is unavailable
+const fallbackKnowledgeBase = [
     {
         keywords:["switch","交换机"],
         answer:"A switch works on Layer 2 (Data Link Layer). It uses MAC addresses to forward data inside the same local network."
@@ -133,6 +195,10 @@ const knowledgeBase = [
         answer:"RAID 1: Mirroring. Two disks copy identical data. Fault tolerance, half storage efficiency."
     },
     {
+        keywords:["raid 5"],
+        answer:"RAID 5: Striping with parity. Minimum 3 drives, survives 1 failure, (n-1)/n efficiency."
+    },
+    {
         keywords:["port scan","端口扫描"],
         answer:"Port scan detects open ports on a host. Administrators use it for security checking; attackers may use it to find vulnerabilities."
     },
@@ -150,48 +216,107 @@ const knowledgeBase = [
     }
 ];
 
-const defaultReply = "Sorry, I have not learned this knowledge yet. Please try another question about computer networking."
+let backendAvailable = false;
 
-//简易模糊匹配算法
-function getAnswer(text){
+// Get answer from backend API
+async function getAnswerFromBackend(message) {
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/chat`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: message })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            return data.response;
+        } else {
+            throw new Error('API error: ' + response.status);
+        }
+    } catch (error) {
+        console.error('Backend API error:', error);
+        return null;
+    }
+}
+
+// Fallback answer using local knowledge base
+function getAnswerFallback(text) {
     const lowerText = text.toLowerCase();
-    for(let item of knowledgeBase){
-        for(let word of item.keywords){
-            if(lowerText.includes(word.toLowerCase())){
+    for (let item of fallbackKnowledgeBase) {
+        for (let word of item.keywords) {
+            if (lowerText.includes(word.toLowerCase())) {
                 return item.answer;
             }
         }
     }
-    return defaultReply;
+    return "Sorry, I don't have specific information about that topic yet. Please try asking about: OSI Model, Subnetting, Network Devices (Switch/Router), RAID, BIOS/UEFI, Network Security, or Troubleshooting Tools.";
 }
 
-//页面渲染消息
-function addMessage(text, isUser){
+// Display message in chat
+function addMessage(text, isUser) {
     const div = document.createElement('div');
     div.className = isUser ? "msg-user" : "msg-bot";
-    div.innerText = text;
+    div.textContent = text;
     chatWindow.appendChild(div);
     chatWindow.scrollTop = chatWindow.scrollHeight;
 }
 
-//发送逻辑
-function sendChat(){
+// Send chat message
+async function sendChat() {
     const text = inputBox.value.trim();
-    if(!text) return;
+    if (!text) return;
+
+    // Display user message
     addMessage(text, true);
     inputBox.value = "";
-    //模拟轻微延迟，更像AI
-    setTimeout(()=>{
-        const reply = getAnswer(text);
-        addMessage(reply, false);
-    }, 400);
+    
+    // Disable send button while processing
+    sendBtn.disabled = true;
+    sendBtn.textContent = '🔄 Sending...';
+
+    let reply;
+    
+    if (backendAvailable) {
+        // Use backend API
+        reply = await getAnswerFromBackend(text);
+        if (!reply) {
+            // Fallback if API fails
+            reply = getAnswerFallback(text);
+        }
+    } else {
+        // Use fallback knowledge base
+        setTimeout(() => {
+            reply = getAnswerFallback(text);
+            addMessage(reply, false);
+            sendBtn.disabled = false;
+            sendBtn.textContent = 'Send';
+        }, 400);
+        return;
+    }
+
+    // Display bot response
+    addMessage(reply, false);
+    
+    // Re-enable send button
+    sendBtn.disabled = false;
+    sendBtn.textContent = 'Send';
 }
 
+// Event listeners
 sendBtn.onclick = sendChat;
-inputBox.onkeydown = (e)=>{
-    if(e.key === "Enter") sendChat();
+inputBox.onkeydown = (e) => {
+    if (e.key === "Enter" && !sendBtn.disabled) {
+        sendChat();
+    }
 }
+
+// Check backend connection on page load
+checkBackendConnection().then(available => {
+    backendAvailable = available;
+});
 </script>
-    
+
 </body>
 </html>
